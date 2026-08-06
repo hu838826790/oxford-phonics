@@ -476,13 +476,22 @@ function speakChunks(chunks,opts){
   }
   next();
 }
+var LETTER_SPOKEN={
+ A:'ay',B:'bee',C:'see',D:'dee',E:'ee',F:'eff',G:'gee',H:'aitch',
+ I:'eye',J:'jay',K:'kay',L:'el',M:'em',N:'en',O:'oh',P:'pee',
+ Q:'cue',R:'ar',S:'ess',T:'tee',U:'you',V:'vee',W:'double-u',X:'ex',Y:'why',Z:'zee'
+};
 function speakLetter(li){
   var L=LETTERS[li];
-  // 字母名(慢) → 停顿 → 单词(示范发音,更慢更清晰)
+  // 字母名用拼读方式念(避免语音引擎把单个大写字母读成 "capital A") → 停顿 → 单词
   speakChunks([
-    {t:L.n,rate:0.7},
+    {t:LETTER_SPOKEN[L.n]||L.n,rate:0.7},
     {t:L.w[0][0],rate:0.6}
   ],{gap:420});
+}
+function speakLetterName(li,rate){
+  var L=LETTERS[li];
+  speak(LETTER_SPOKEN[L.n]||L.n,rate||0.75);
 }
 function toast(msg){var t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(function(){t.classList.remove('show');},1600);}
 function confetti(){
@@ -891,14 +900,14 @@ $('matchGrid').addEventListener('click',function(e){
   if(matchOpen.indexOf(idx)>-1||b.classList.contains('matched'))return;
   b.classList.remove('hide');b.classList.add('show');
   matchOpen.push(idx);
-  lastMatchLi=c.li;speak(LETTERS[c.li].n,0.75);
+  lastMatchLi=c.li;speakLetterName(c.li);
   if(matchOpen.length===2){
     matchLocked=true;matchMoves++;
     var a=matchOpen[0],bb=matchOpen[1],ca=matchCards[a],cb=matchCards[bb];
     var am=$('matchGrid').children[a],bm=$('matchGrid').children[bb];
     if(ca.li===cb.li&&ca.up!==cb.up){
       playCorrect();
-      matchPairs++;addCorrect(ca.li);speak(LETTERS[ca.li].n);
+      matchPairs++;addCorrect(ca.li);speakLetterName(ca.li);
       setTimeout(function(){
         am.classList.add('matched');bm.classList.add('matched');
         matchOpen=[];matchLocked=false;
@@ -928,7 +937,7 @@ function finishMatch(){
 }
 $('matchAgain').addEventListener('click',newMatch);
 $('matchReplay').addEventListener('click',function(){
-  if(lastMatchLi>=0){speak(LETTERS[lastMatchLi].n,0.75);}
+  if(lastMatchLi>=0){speakLetterName(lastMatchLi);}
   else{toast('先翻开一张卡片吧 🃏');}
 });
 var lastMatchLi=-1;
