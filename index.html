@@ -417,6 +417,40 @@ function clearSpk(){
   if('speechSynthesis' in window){try{window.speechSynthesis.cancel();}catch(e){}}
 }
 function primeSpeech(){if('speechSynthesis' in window){try{window.speechSynthesis.getVoices();}catch(e){}}}
+var audioCtx=null;
+function ensureAudio(){
+  if(muted)return null;
+  if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){return null;}}
+  if(audioCtx&&audioCtx.state==='suspended'){try{audioCtx.resume();}catch(e){}}
+  return audioCtx;
+}
+function playTone(freq,dur,type,vol,when){
+  var ac=ensureAudio();if(!ac)return;
+  try{
+    var o=ac.createOscillator(),g=ac.createGain();
+    o.type=type||'sine';o.frequency.value=freq;
+    var t=ac.currentTime+(when||0);
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.exponentialRampToValueAtTime(vol||0.22,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g);g.connect(ac.destination);
+    o.start(t);o.stop(t+dur+0.05);
+  }catch(e){}
+}
+function playCorrect(n){
+  // 答对：清脆上行音（默认三连音，n===2 用两连音）
+  var seq=(n===2)?[659.25,880]:[523.25,659.25,783.99];
+  for(var i=0;i<seq.length;i++){playTone(seq[i],0.16,'sine',0.24,i*0.13);}
+}
+function playWrong(){
+  // 答错：低沉"嘟-嘟"提示音
+  playTone(220,0.2,'sawtooth',0.15,0);
+  playTone(164.81,0.26,'sawtooth',0.15,0.2);
+}
+function playNeutral(){
+  // 中性提示音
+  playTone(440,0.15,'sine',0.18,0);
+}
 function speak(text,rate,pitch){
   if(muted||!('speechSynthesis' in window))return;
   clearSpk();
@@ -634,14 +668,14 @@ function gradeWriting(auto){
     if(isRef)ref++;
     if(isInk){user++;if(isRef)overlap++;}
   }
-  if(user<300){showGrade('还没开始写哦，先沿着浅色字描一描 ✍️',0,0);return;}
+  if(user<300){playNeutral();showGrade('还没开始写哦，先沿着浅色字描一描 ✍️',0,0);return;}
   var coverage=ref>0?overlap/ref:0,precision=user>0?overlap/user:0;
   var score=coverage*precision;
   var stars=score>=0.32?3:(score>=0.16?2:(score>=0.07?1:0));
-  if(stars===3){showGrade('太棒了，写得真漂亮！🌟',stars,score);addStars(2);confetti();}
-  else if(stars===2){showGrade('不错哦，再写仔细一点更好！👍',stars,score);addStars(1);}
-  else if(stars===1){showGrade('有进步，多描几次就能写好！💪',stars,score);}
-  else{showGrade('还没写准，沿着浅色字慢慢描哦 🤗',stars,score);}
+  if(stars===3){showGrade('太棒了，写得真漂亮！🌟',stars,score);addStars(2);confetti();playCorrect();}
+  else if(stars===2){showGrade('不错哦，再写仔细一点更好！👍',stars,score);addStars(1);playCorrect(2);}
+  else if(stars===1){showGrade('有进步，多描几次就能写好！💪',stars,score);playNeutral();}
+  else{showGrade('还没写准，沿着浅色字慢慢描哦 🤗',stars,score);playWrong();}
   gradeShown=true;
 }
 function showGrade(msg,stars,score){
@@ -785,11 +819,13 @@ $('qOptions').addEventListener('click',function(e){
   var correctBtn=null;
   btns.forEach(function(x){if(parseInt(x.getAttribute('data-i'),10)===li)correctBtn=x;});
   if(oi===li){
+    playCorrect();
     b.classList.add('correct');qCorrect++;addCorrect(li);
     toast(PRAISE[Math.floor(Math.random()*PRAISE.length)]);
     confetti();
     speakLetter(li);
   }else{
+    playWrong();
     b.classList.add('wrong');if(correctBtn)correctBtn.classList.add('correct');
     addWrong(li);if(missedSet.indexOf(li)<0)missedSet.push(li);
     toast(ENCOURAGE[Math.floor(Math.random()*ENCOURAGE.length)]);
@@ -861,6 +897,7 @@ $('matchGrid').addEventListener('click',function(e){
     var a=matchOpen[0],bb=matchOpen[1],ca=matchCards[a],cb=matchCards[bb];
     var am=$('matchGrid').children[a],bm=$('matchGrid').children[bb];
     if(ca.li===cb.li&&ca.up!==cb.up){
+      playCorrect();
       matchPairs++;addCorrect(ca.li);speak(LETTERS[ca.li].n);
       setTimeout(function(){
         am.classList.add('matched');bm.classList.add('matched');
@@ -869,6 +906,7 @@ $('matchGrid').addEventListener('click',function(e){
         if(matchPairs>=MATCH_PAIRS)finishMatch();
       },450);
     }else{
+      playWrong();
       toast('再试一次！🔁');
       setTimeout(function(){
         am.classList.remove('show');am.classList.add('hide');
@@ -959,11 +997,13 @@ $('sentOptions').addEventListener('click',function(e){
   var btns=$('sentOptions').querySelectorAll('.s-opt'),correctBtn=null;
   btns.forEach(function(x){if(x.textContent.trim()===S.q)correctBtn=x;});
   if(b.textContent.trim()===S.q){
+    playCorrect();
     b.classList.add('correct');sentCorrect++;
     toast(PRAISE[Math.floor(Math.random()*PRAISE.length)]);
     confetti();
     speak(S.q,0.68);
   }else{
+    playWrong();
     b.classList.add('wrong');if(correctBtn)correctBtn.classList.add('correct');
     toast(ENCOURAGE[Math.floor(Math.random()*ENCOURAGE.length)]);
     speak(S.q,0.68);
