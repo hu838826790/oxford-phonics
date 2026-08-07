@@ -556,7 +556,7 @@ function speakChunks(chunks,opts){
 
 
 
-var APP_VERSION='v13'; // 当前版本号，每次发布递增
+var APP_VERSION='v14'; // 当前版本号，每次发布递增
 var LETTER_SPOKEN={
  A:'ay',B:'bee',C:'see',D:'dee',E:'ee',F:'eff',G:'gee',H:'aitch',
  I:'eye',J:'jay',K:'kay',L:'el',M:'em',N:'en',O:'oh',P:'pee',
@@ -772,9 +772,10 @@ $('learnView').addEventListener('click',function(e){
 /* ================= 书写 ================= */
 var trIdx=0,trCase='up',trMode='letter',trWordIdx=0,inkDrawn=false,gradeShown=false,gradeTimer=null;
 var canvas=$('traceCanvas'),ctx=canvas.getContext('2d'),drawing=false;
+function trH(){return trMode==='word'?620:460;}
 function setupCanvas(){
   var dpr=window.devicePixelRatio||1;
-  canvas.width=820*dpr;canvas.height=460*dpr;
+  canvas.width=820*dpr;canvas.height=trH()*dpr;
   ctx.setTransform(dpr,0,0,dpr,0,0);
   drawGhost();
 }
@@ -782,18 +783,20 @@ function ghostSpec(){
   var L=LETTERS[trIdx];
   if(trMode==='word'){
     var w=L.w[trWordIdx];
-    return {text:w[0],font:110,x:410,y:330};
+    // 单词模式：画布更高、单词更大，书写空间更充足
+    return {text:w[0],font:170,x:410,y:400};
   }
   return {text:trCase==='up'?L.n:L.l,font:300,x:410,y:trCase==='up'?350:390};
 }
 function drawGhost(){
-  ctx.clearRect(0,0,820,460);
+  var H=trH();
+  ctx.clearRect(0,0,820,H);
   ctx.lineWidth=3;ctx.strokeStyle='#f0e8d8';
   ctx.setLineDash([]);
   ctx.beginPath();ctx.moveTo(20,70);ctx.lineTo(800,70);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(20,390);ctx.lineTo(800,390);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(20,H-70);ctx.lineTo(800,H-70);ctx.stroke();
   ctx.setLineDash([10,10]);
-  ctx.beginPath();ctx.moveTo(20,230);ctx.lineTo(800,230);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(20,(70+H-70)/2);ctx.lineTo(800,(70+H-70)/2);ctx.stroke();
   ctx.setLineDash([]);
   var g=ghostSpec();
   ctx.fillStyle='rgba(140,130,120,0.35)';
@@ -803,7 +806,7 @@ function drawGhost(){
 }
 function canvasPos(e){
   var r=canvas.getBoundingClientRect();
-  var sx=820/r.width,sy=460/r.height;
+  var sx=820/r.width,sy=trH()/r.height;
   var p=e.touches?e.touches[0]:e;
   return {x:(p.clientX-r.left)*sx,y:(p.clientY-r.top)*sy};
 }
@@ -836,7 +839,7 @@ function gradeWriting(auto){
   var off=document.createElement('canvas');off.width=W;off.height=H;
   var oc=off.getContext('2d');
   oc.setTransform(dpr,0,0,dpr,0,0);
-  oc.clearRect(0,0,820,460);
+  oc.clearRect(0,0,820,trH());
   oc.fillStyle='#000';
   var g=ghostSpec();
   oc.font='bold '+g.font+'px "Chalkboard SE","Comic Sans MS","Marker Felt",cursive';
@@ -940,8 +943,8 @@ $('trCheck').addEventListener('click',function(){gradeWriting(false);});
 $('trClear').addEventListener('click',function(){drawGhost();$('gradeBox').style.display='none';inkDrawn=false;gradeShown=false;toast('已清空，再写一次吧！✍️');});
 $('caseUp').addEventListener('click',function(){trCase='up';renderTrace();});
 $('caseLo').addEventListener('click',function(){trCase='lo';renderTrace();});
-$('trModeLetter').addEventListener('click',function(){trMode='letter';renderTrace();});
-$('trModeWord').addEventListener('click',function(){trMode='word';renderTrace();playWord(LETTERS[trIdx].w[trWordIdx][0]);});
+$('trModeLetter').addEventListener('click',function(){trMode='letter';setupCanvas();renderTrace();});
+$('trModeWord').addEventListener('click',function(){trMode='word';setupCanvas();renderTrace();playWord(LETTERS[trIdx].w[trWordIdx][0]);});
 
 /* ================= 练习 ================= */
 var quizMode='hear',qList=[],qIdx=0,qCorrect=0,qTotal=0,qBusy=false,missedSet=[];
@@ -1007,13 +1010,11 @@ $('qOptions').addEventListener('click',function(e){
     b.classList.add('correct');qCorrect++;addCorrect(li);
     toast(PRAISE[Math.floor(Math.random()*PRAISE.length)]);
     confetti();
-    speakLetter(li);
   }else{
     playWrong();
     b.classList.add('wrong');if(correctBtn)correctBtn.classList.add('correct');
     addWrong(li);if(missedSet.indexOf(li)<0)missedSet.push(li);
     toast(ENCOURAGE[Math.floor(Math.random()*ENCOURAGE.length)]);
-    if(correctBtn)setTimeout(function(){speakLetter(li);},350);
   }
   setTimeout(function(){
     qIdx++;
@@ -1185,12 +1186,10 @@ $('sentOptions').addEventListener('click',function(e){
     b.classList.add('correct');sentCorrect++;
     toast(PRAISE[Math.floor(Math.random()*PRAISE.length)]);
     confetti();
-    playSentence(S.q);
   }else{
     playWrong();
     b.classList.add('wrong');if(correctBtn)correctBtn.classList.add('correct');
     toast(ENCOURAGE[Math.floor(Math.random()*ENCOURAGE.length)]);
-    playSentence(S.q);
   }
   setTimeout(function(){
     sentIdx++;
