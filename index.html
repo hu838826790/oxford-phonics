@@ -562,7 +562,7 @@ function speakChunks(chunks,opts){
 
 
 
-var APP_VERSION='v18'; // 当前版本号，每次发布递增
+var APP_VERSION='v19'; // 当前版本号，每次发布递增
 var LETTER_SPOKEN={
  A:'ay',B:'bee',C:'see',D:'dee',E:'ee',F:'eff',G:'gee',H:'aitch',
  I:'eye',J:'jay',K:'kay',L:'el',M:'em',N:'en',O:'oh',P:'pee',
@@ -669,11 +669,20 @@ function renderDaily(){
 function dailyInit(){
   var today=todayStr(),saved='',ds=0;
   try{saved=localStorage.getItem('opfDayDate')||'';ds=parseInt(localStorage.getItem('opfDayStars')||'0',10);}catch(e){}
-  if(saved!==today){ds=0;try{localStorage.setItem('opfDayWrote','[]');}catch(e){}}
+  if(saved!==today){ds=0;try{localStorage.setItem('opfDayWrote','[]');localStorage.setItem('opfDayAward','[]');}catch(e){}}
   opfDayDate=today;opfDayStars=ds;
   try{localStorage.setItem('opfDayDate',today);localStorage.setItem('opfDayStars',String(ds));}catch(e){}
   $('starsBadge').textContent='⭐ '+ds;
   renderDaily();
+}
+function dailyAwardOnce(key){
+  var got=[];
+  try{got=JSON.parse(localStorage.getItem('opfDayAward')||'[]');}catch(e){got=[];}
+  if(!Array.isArray(got))got=[];
+  if(got.indexOf(key)>-1)return false;
+  got.push(key);
+  try{localStorage.setItem('opfDayAward',JSON.stringify(got));localStorage.setItem('opfDayDate',opfDayDate||todayStr());}catch(e){}
+  return true;
 }
 function awardWriteStar(letter){
   var wrote=[];
@@ -1211,8 +1220,10 @@ $('sentOptions').addEventListener('click',function(e){
   if(b.textContent.trim()===S.q){
     playCorrect();
     b.classList.add('correct');sentCorrect++;
-    toast(PRAISE[Math.floor(Math.random()*PRAISE.length)]);
+    var aw=dailyAwardOnce('sent');
+    toast(PRAISE[Math.floor(Math.random()*PRAISE.length)]+(aw?' (+2⭐)':''));
     confetti();
+    if(aw){addStars(2);}
   }else{
     playWrong();
     b.classList.add('wrong');if(correctBtn)correctBtn.classList.add('correct');
@@ -1231,7 +1242,6 @@ function finishSent(){
   $('sentEndScore').textContent='答对 '+sentCorrect+' / '+sentList.length+' 题';
   showEndStars($('sentEndStars'),stars);
   $('sentEnd').classList.add('show');
-  addStars(stars);
   if(stars===3)confetti();
 }
 $('sentAgain').addEventListener('click',newSent);
@@ -1286,8 +1296,11 @@ function checkOrder(){
   if(ok){
     orderScore++;orderBusy=true;
     playCorrect();
+    var aw2=dailyAwardOnce('order');
+    toast('句子排对啦！🎉'+(aw2?' (+3⭐)':''));
+    confetti();
+    if(aw2){addStars(3);}
     $('orderAnswer').style.outline='3px solid #4cd97b';
-    toast('句子排对啦！🎉');confetti();
     setTimeout(function(){
       orderBusy=false;
       orderIdx++;
@@ -1309,7 +1322,6 @@ function finishSentOrder(){
   $('sentOrderEndScore').textContent='排对 '+orderScore+' / '+orderList.length+' 题';
   showEndStars($('sentOrderEndStars'),stars);
   $('sentOrderEnd').classList.add('show');
-  addStars(stars);
   if(stars===3)confetti();
 }
 $('sentOrderAgain').addEventListener('click',newSentOrder);
