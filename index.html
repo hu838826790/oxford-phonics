@@ -562,7 +562,7 @@ function speakChunks(chunks,opts){
 
 
 
-var APP_VERSION='v17'; // 当前版本号，每次发布递增
+var APP_VERSION='v18'; // 当前版本号，每次发布递增
 var LETTER_SPOKEN={
  A:'ay',B:'bee',C:'see',D:'dee',E:'ee',F:'eff',G:'gee',H:'aitch',
  I:'eye',J:'jay',K:'kay',L:'el',M:'em',N:'en',O:'oh',P:'pee',
@@ -669,11 +669,20 @@ function renderDaily(){
 function dailyInit(){
   var today=todayStr(),saved='',ds=0;
   try{saved=localStorage.getItem('opfDayDate')||'';ds=parseInt(localStorage.getItem('opfDayStars')||'0',10);}catch(e){}
-  if(saved!==today){ds=0;}
+  if(saved!==today){ds=0;try{localStorage.setItem('opfDayWrote','[]');}catch(e){}}
   opfDayDate=today;opfDayStars=ds;
   try{localStorage.setItem('opfDayDate',today);localStorage.setItem('opfDayStars',String(ds));}catch(e){}
   $('starsBadge').textContent='⭐ '+ds;
   renderDaily();
+}
+function awardWriteStar(letter){
+  var wrote=[];
+  try{wrote=JSON.parse(localStorage.getItem('opfDayWrote')||'[]');}catch(e){wrote=[];}
+  if(!Array.isArray(wrote))wrote=[];
+  if(wrote.indexOf(letter)>-1)return false;
+  wrote.push(letter);
+  try{localStorage.setItem('opfDayWrote',JSON.stringify(wrote));localStorage.setItem('opfDayDate',opfDayDate||todayStr());}catch(e){}
+  return true;
 }
 function addStars(n){
   var t=0;try{t=parseInt(localStorage.getItem('opfStars')||'0',10);}catch(e){}
@@ -866,10 +875,12 @@ function gradeWriting(auto){
   var coverage=ref>0?overlap/ref:0,precision=user>0?overlap/user:0;
   var score=coverage*precision;
   var stars=score>=0.18?3:(score>=0.09?2:(score>=0.04?1:0));
-  if(stars===3){showGrade('太棒了，写得真漂亮！🌟',stars,score);addStars(2);confetti();playCorrect();showCeleb(3,'太棒了！');}
-  else if(stars===2){showGrade('真棒，写得很漂亮！⭐',stars,score);addStars(1);confetti();playCorrect(2);showCeleb(2,'真棒！');}
+  if(stars===3){showGrade('太棒了，写得真漂亮！🌟',stars,score);confetti();playCorrect();showCeleb(3,'太棒了！');}
+  else if(stars===2){showGrade('真棒，写得很漂亮！⭐',stars,score);confetti();playCorrect(2);showCeleb(2,'真棒！');}
   else if(stars===1){showGrade('不错，再多描几下更好！💪',stars,score);playNeutral();}
   else{showGrade('还没写准，沿着浅色字慢慢描哦 🤗',stars,score);playWrong();}
+  // 书写对（2-3星）只奖励 1 颗星；每天同一个字母只计一次，防止重复刷星
+  if(stars>=2&&awardWriteStar(LETTERS[trIdx].n)){addStars(1);}
   gradeShown=true;
 }
 function showCeleb(stars,msg){
