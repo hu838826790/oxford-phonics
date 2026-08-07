@@ -182,6 +182,8 @@
   .order-hint{text-align:center;font-weight:800;color:var(--purple);margin-bottom:8px;font-size:15px;}
   @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-7px);}75%{transform:translateX(7px);}}
   .order-answer.wrong{animation:shake .4s;}
+  .learn-sound-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
+  .play-big.sound-btn{background:linear-gradient(135deg,#4cd97b,#20c997);margin-bottom:0;}
   #toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(30px);background:rgba(74,55,40,.94);color:#fff;padding:14px 22px;border-radius:16px;font-size:16px;font-weight:800;opacity:0;transition:.25s;z-index:99;pointer-events:none;max-width:88vw;text-align:center;}
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
   .confetti{position:fixed;top:-16px;width:12px;height:12px;border-radius:3px;z-index:98;pointer-events:none;animation:fall 1.8s linear forwards;}
@@ -222,7 +224,10 @@
         <div class="box"><div class="cap">小写</div><div class="l" id="lvLo">a</div></div>
       </div>
       <div class="sound-sym" id="lvSound">/æ/</div>
-      <button class="play-big" id="lvPlay">🔊 听一听 (字母名 + 发音)</button>
+      <div class="learn-sound-btns">
+        <button class="play-big" id="lvPlay">🔠 字母名 + 单词</button>
+        <button class="play-big sound-btn" id="lvSoundBtn">🔊 听发音</button>
+      </div>
       <div class="word-chips" id="lvWords"></div>
       <div class="nav-row">
         <button class="back" id="lvBack">← 返回字母表</button>
@@ -519,13 +524,27 @@ var LETTER_SPOKEN={
  I:'eye',J:'jay',K:'kay',L:'el',M:'em',N:'en',O:'oh',P:'pee',
  Q:'cue',R:'ar',S:'ess',T:'tee',U:'you',V:'vee',W:'double-u',X:'ex',Y:'why',Z:'zee'
 };
+var SOUND_SPOKEN={
+ A:'ah',B:'buh',C:'kuh',D:'duh',E:'eh',F:'fuh',G:'guh',H:'huh',
+ I:'ih',J:'juh',K:'kuh',L:'luh',M:'muh',N:'nuh',O:'ah',P:'puh',
+ Q:'kwuh',R:'ruh',S:'sss',T:'tuh',U:'uh',V:'vuh',W:'wuh',X:'kss',Y:'yuh',Z:'zzz'
+};
 function speakLetter(li){
   var L=LETTERS[li];
-  // 字母名用拼读方式念(避免语音引擎把单个大写字母读成 "capital A") → 停顿 → 单词
+  // 字母名(拼读式) → 自然拼读发音(小写字母的音) → 单词示范，三段各留停顿
   speakChunks([
     {t:LETTER_SPOKEN[L.n]||L.n,rate:0.7},
+    {t:SOUND_SPOKEN[L.n]||L.s,rate:0.62,pitch:1.1},
     {t:L.w[0][0],rate:0.6}
-  ],{gap:420});
+  ],{gap:400});
+}
+function speakSound(li){
+  var L=LETTERS[li];
+  // 只听自然拼读发音 + 单词
+  speakChunks([
+    {t:SOUND_SPOKEN[L.n]||L.s,rate:0.62,pitch:1.1},
+    {t:L.w[0][0],rate:0.6}
+  ],{gap:380});
 }
 function speakLetterName(li,rate){
   var L=LETTERS[li];
@@ -607,6 +626,7 @@ $('cnToggle').addEventListener('change',function(){cnOn=this.checked;try{localSt
 function renderLearn(){
   var L=LETTERS[curLearn];
   $('lvUp').textContent=L.n;$('lvLo').textContent=L.l;$('lvSound').textContent=L.s;
+  $('lvSoundBtn').textContent='🔊 听发音 '+L.s;
   var h='';
   L.w.forEach(function(x){
     h+='<button class="word-chip" data-w="'+x[0]+'"><div class="e">'+x[1]+'</div><div class="w">'+x[0]+'</div>'+
@@ -630,6 +650,7 @@ $('lvBack').addEventListener('click',function(){$('learnView').classList.remove(
 $('lvPrev').addEventListener('click',function(){curLearn=(curLearn+25)%26;renderLearn();speakLetter(curLearn);});
 $('lvNext').addEventListener('click',function(){curLearn=(curLearn+1)%26;renderLearn();speakLetter(curLearn);});
 $('lvPlay').addEventListener('click',function(){speakLetter(curLearn);});
+$('lvSoundBtn').addEventListener('click',function(){speakSound(curLearn);});
 $('learnView').addEventListener('click',function(e){
   if(e.target.closest('.word-chip'))return;
 });
@@ -738,6 +759,7 @@ function showGrade(msg,stars,score){
 }
 function renderTrace(){
   var L=LETTERS[trIdx];
+  $('caseUp').textContent=L.n;$('caseLo').textContent=L.l;
   $('caseUp').classList.toggle('active',trCase==='up');
   $('caseLo').classList.toggle('active',trCase==='lo');
   $('trModeLetter').classList.toggle('active',trMode==='letter');
