@@ -202,6 +202,11 @@
   .daily-bar i{display:block;height:100%;background:linear-gradient(90deg,#ffd43b,#ff9f1a);border-radius:8px;transition:width .3s;}
   .daily-next{text-align:center;font-size:12px;color:var(--muted);font-weight:700;}
   .daily-foot{text-align:center;font-size:12px;color:var(--muted);font-weight:700;margin-top:8px;border-top:1px dashed #f0dcc0;padding-top:8px;}
+  #writeCeleb{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:100;pointer-events:none;}
+  #writeCeleb .wc-box{background:linear-gradient(135deg,#fff8e6,#ffe9f3);border:4px solid #ffd43b;border-radius:28px;padding:26px 40px;text-align:center;box-shadow:0 12px 40px rgba(255,180,60,.5);animation:wcPop .4s ease;}
+  @keyframes wcPop{0%{transform:scale(.3);opacity:0;}70%{transform:scale(1.08);}100%{transform:scale(1);opacity:1;}}
+  #writeCeleb .wc-stars{font-size:64px;letter-spacing:10px;}
+  #writeCeleb .wc-msg{font-size:26px;font-weight:800;color:var(--ink);margin-top:8px;}
   .app-footer{text-align:center;font-size:12px;color:var(--muted);font-weight:700;padding:14px 0 4px;}
   .daily-mini{background:#fff;border:2px solid #f5d76e;border-radius:12px;padding:5px 9px;font-size:14px;box-shadow:var(--shadow);}
   #toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(30px);background:rgba(74,55,40,.94);color:#fff;padding:14px 22px;border-radius:16px;font-size:16px;font-weight:800;opacity:0;transition:.25s;z-index:99;pointer-events:none;max-width:88vw;text-align:center;}
@@ -384,6 +389,7 @@
   </section>
 </div>
 <div class="app-footer">🚀 小程序开发归属：嘉兴辰星留学-HU · <span id="verTag"></span></div>
+<div id="writeCeleb" style="display:none;"><div class="wc-box"><div class="wc-stars" id="wcStars"></div><div class="wc-msg" id="wcMsg"></div></div></div>
 <div id="toast"></div>
 
 <script>
@@ -556,7 +562,7 @@ function speakChunks(chunks,opts){
 
 
 
-var APP_VERSION='v14'; // 当前版本号，每次发布递增
+var APP_VERSION='v15'; // 当前版本号，每次发布递增
 var LETTER_SPOKEN={
  A:'ay',B:'bee',C:'see',D:'dee',E:'ee',F:'eff',G:'gee',H:'aitch',
  I:'eye',J:'jay',K:'kay',L:'el',M:'em',N:'en',O:'oh',P:'pee',
@@ -857,12 +863,20 @@ function gradeWriting(auto){
   if(user<300){playNeutral();showGrade('还没开始写哦，先沿着浅色字描一描 ✍️',0,0);return;}
   var coverage=ref>0?overlap/ref:0,precision=user>0?overlap/user:0;
   var score=coverage*precision;
-  var stars=score>=0.32?3:(score>=0.16?2:(score>=0.07?1:0));
-  if(stars===3){showGrade('太棒了，写得真漂亮！🌟',stars,score);addStars(2);confetti();playCorrect();}
-  else if(stars===2){showGrade('不错哦，再写仔细一点更好！👍',stars,score);addStars(1);playCorrect(2);}
-  else if(stars===1){showGrade('有进步，多描几次就能写好！💪',stars,score);playNeutral();}
+  var stars=score>=0.18?3:(score>=0.09?2:(score>=0.04?1:0));
+  if(stars===3){showGrade('太棒了，写得真漂亮！🌟',stars,score);addStars(2);confetti();playCorrect();showCeleb(3,'太棒了！');}
+  else if(stars===2){showGrade('真棒，写得很漂亮！⭐',stars,score);addStars(1);confetti();playCorrect(2);showCeleb(2,'真棒！');}
+  else if(stars===1){showGrade('不错，再多描几下更好！💪',stars,score);playNeutral();}
   else{showGrade('还没写准，沿着浅色字慢慢描哦 🤗',stars,score);playWrong();}
   gradeShown=true;
+}
+function showCeleb(stars,msg){
+  var h='';for(var i=0;i<stars;i++){h+='⭐';}
+  $('wcStars').textContent=h;
+  $('wcMsg').textContent=msg;
+  var el=$('writeCeleb');el.style.display='flex';
+  if(window.__celebT){clearTimeout(window.__celebT);}
+  window.__celebT=setTimeout(function(){el.style.display='none';},1800);
 }
 function showGrade(msg,stars,score){
   var gb=$('gradeBox');
