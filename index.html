@@ -184,6 +184,19 @@
   .order-answer.wrong{animation:shake .4s;}
   .learn-sound-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
   .play-big.sound-btn{background:linear-gradient(135deg,#4cd97b,#20c997);margin-bottom:0;}
+  .daily-card{background:linear-gradient(135deg,#fff8e6,#fff);border:2px solid #f5d76e;border-radius:18px;padding:12px 14px;margin-bottom:14px;box-shadow:var(--shadow);}
+  .daily-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .daily-date{font-weight:800;color:var(--ink);font-size:14px;}
+  .daily-stars{font-weight:800;color:#e6a800;font-size:14px;flex:1;text-align:right;}
+  .daily-check{border:none;border-radius:12px;padding:8px 14px;font-size:13px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,#ffb347,#ff6b6b);color:#fff;box-shadow:var(--shadow);}
+  .daily-check:active{transform:scale(.95);}
+  .daily-medal{text-align:center;font-size:24px;font-weight:800;margin:8px 0 4px;}
+  .daily-bar{height:12px;background:#eee7da;border-radius:8px;overflow:hidden;margin:4px 0 6px;}
+  .daily-bar i{display:block;height:100%;background:linear-gradient(90deg,#ffd43b,#ff9f1a);border-radius:8px;transition:width .3s;}
+  .daily-next{text-align:center;font-size:12px;color:var(--muted);font-weight:700;}
+  .daily-foot{text-align:center;font-size:12px;color:var(--muted);font-weight:700;margin-top:8px;border-top:1px dashed #f0dcc0;padding-top:8px;}
+  .app-footer{text-align:center;font-size:12px;color:var(--muted);font-weight:700;padding:14px 0 4px;}
+  .daily-mini{background:#fff;border:2px solid #f5d76e;border-radius:12px;padding:5px 9px;font-size:14px;box-shadow:var(--shadow);}
   #toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(30px);background:rgba(74,55,40,.94);color:#fff;padding:14px 22px;border-radius:16px;font-size:16px;font-weight:800;opacity:0;transition:.25s;z-index:99;pointer-events:none;max-width:88vw;text-align:center;}
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
   .confetti{position:fixed;top:-16px;width:12px;height:12px;border-radius:3px;z-index:98;pointer-events:none;animation:fall 1.8s linear forwards;}
@@ -199,6 +212,7 @@
         <input type="checkbox" id="cnToggle" checked><span class="dot"></span>中文
       </label>
       <button class="icon-btn" id="soundToggle" title="声音开关">🔊</button>
+      <span class="daily-mini" id="dailyMini">🏅</span>
       <span id="starsBadge">⭐ 0</span>
     </div>
   </header>
@@ -216,6 +230,17 @@
     <div class="learn-tools">
       <div class="legend">📊 掌握度：每答对一次点亮一颗⭐，点亮 3 颗 = 掌握这个字母（练习/配对里答对都会加）</div>
       <button class="alphabet-play" id="alphabetPlay">🔁 连播字母表</button>
+    </div>
+    <div class="daily-card" id="dailyCard">
+      <div class="daily-row">
+        <div class="daily-date">📅 <span id="dailyDate"></span></div>
+        <div class="daily-stars" id="dailyStars"></div>
+        <button class="daily-check" id="dailyCheck">✅ 今日打卡</button>
+      </div>
+      <div class="daily-medal" id="dailyMedal"></div>
+      <div class="daily-bar" id="dailyBar"><i style="width:0%"></i></div>
+      <div class="daily-next" id="dailyNext"></div>
+      <div class="daily-foot">🏆 开发归属：嘉兴辰星留学-HU</div>
     </div>
     <div id="letterGrid" class="grid-letters"></div>
     <div id="learnView" class="card learn-view">
@@ -351,6 +376,7 @@
     </div>
   </section>
 </div>
+<div class="app-footer">🚀 小程序开发归属：嘉兴辰星留学-HU</div>
 <div id="toast"></div>
 
 <script>
@@ -577,10 +603,61 @@ function confetti(){
     (function(el){setTimeout(function(){el.remove();},2600);})(d);
   }
 }
+var MEDALS=[
+ {name:'青铜',min:1,em:'🥉'},
+ {name:'白银',min:6,em:'🥈'},
+ {name:'黄金',min:12,em:'🥇'},
+ {name:'铂金',min:20,em:'💠'},
+ {name:'钻石',min:30,em:'💎'},
+ {name:'王者',min:45,em:'👑'}
+];
+var opfDayStars=0,opfDayDate='';
+function todayStr(){
+  var d=new Date();
+  return d.getFullYear()+'-'+(d.getMonth()<9?'0':'')+(d.getMonth()+1)+'-'+(d.getDate()<10?'0':'')+d.getDate();
+}
+function medalFor(stars){
+  var m=null;
+  for(var i=0;i<MEDALS.length;i++){if(stars>=MEDALS[i].min)m=MEDALS[i];}
+  return m;
+}
+function nextMedal(stars){
+  for(var i=0;i<MEDALS.length;i++){if(stars<MEDALS[i].min)return MEDALS[i];}
+  return null;
+}
+function renderDaily(){
+  var m=medalFor(opfDayStars),nm=nextMedal(opfDayStars);
+  $('dailyDate').textContent=opfDayDate;
+  $('dailyStars').textContent='今日 ⭐ '+opfDayStars;
+  $('dailyMedal').textContent=m?(m.em+' '+m.name):'🥉 青铜 · 等你点亮';
+  $('dailyMini').textContent=m?m.em:'🏅';
+  var bar=$('dailyBar');
+  if(nm){
+    var prev=0;
+    for(var i=0;i<MEDALS.length;i++){if(MEDALS[i].min<nm.min)prev=MEDALS[i].min;}
+    var pct=Math.max(0,Math.min(100,Math.round((opfDayStars-prev)/(nm.min-prev)*100)));
+    bar.innerHTML='<i style="width:'+pct+'%"></i>';
+    $('dailyNext').textContent='距 '+nm.em+' '+nm.name+' 还差 '+(nm.min-opfDayStars)+' 颗 ⭐';
+  }else{
+    bar.innerHTML='<i style="width:100%"></i>';
+    $('dailyNext').textContent='今日已达最高荣誉：'+m.name+'！👑';
+  }
+}
+function dailyInit(){
+  var today=todayStr(),saved='',ds=0;
+  try{saved=localStorage.getItem('opfDayDate')||'';ds=parseInt(localStorage.getItem('opfDayStars')||'0',10);}catch(e){}
+  if(saved!==today){ds=0;}
+  opfDayDate=today;opfDayStars=ds;
+  try{localStorage.setItem('opfDayDate',today);localStorage.setItem('opfDayStars',String(ds));}catch(e){}
+  $('starsBadge').textContent='⭐ '+ds;
+  renderDaily();
+}
 function addStars(n){
   var t=0;try{t=parseInt(localStorage.getItem('opfStars')||'0',10);}catch(e){}
-  t+=n;try{localStorage.setItem('opfStars',String(t));}catch(e){}
-  $('starsBadge').textContent='⭐ '+t;
+  t+=n;opfDayStars+=n;
+  try{localStorage.setItem('opfStars',String(t));localStorage.setItem('opfDayStars',String(opfDayStars));localStorage.setItem('opfDayDate',opfDayDate||todayStr());}catch(e){}
+  $('starsBadge').textContent='⭐ '+opfDayStars;
+  renderDaily();
 }
 function showEndStars(el,count){
   var h='';for(var i=0;i<3;i++){h+='<span class="'+(i<count?'':'off')+'">⭐</span>';}
@@ -625,6 +702,12 @@ function playAlphabet(){
   },2100);
 }
 $('alphabetPlay').addEventListener('click',playAlphabet);
+$('dailyCheck').addEventListener('click',function(){
+  if(opfDayStars<=0){toast('先去做几道练习赚星星吧！🌟');return;}
+  var m=medalFor(opfDayStars);
+  toast(m?('今日打卡成功！获得 '+m.em+' '+m.name+' 荣誉勋章'):'今日打卡成功！继续加油💪');
+  confetti();
+});
 
 /* ================= 学习 ================= */
 var gridHtml='';
@@ -1267,6 +1350,7 @@ $('soundToggle').addEventListener('click',function(){
   }catch(e){}
   $('cnToggle').checked=cnOn;
   $('soundToggle').textContent=muted?'🔇':'🔊';
+  dailyInit();
   renderLearn();
   setupCanvas();
   renderTrace();
