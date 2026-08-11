@@ -221,16 +221,8 @@
   .game-entry .big{font-size:44px;display:block;margin-bottom:8px;}
   .game-hud{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;background:#fff;border-radius:14px;padding:8px 12px;box-shadow:var(--shadow);font-weight:800;font-size:14px;margin-bottom:10px;}
   .game-hud button{border:none;border-radius:10px;padding:6px 12px;font-weight:800;cursor:pointer;background:#ff6b6b;color:#fff;}
-  .z-gun{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);width:196px;height:92px;z-index:4;pointer-events:none;}
-  .zombie.bonus{transform:scale(1.7);z-index:8;}
-  .zombie.bonus .z-label{font-size:24px;background:linear-gradient(135deg,#ffd43b,#ffb347);}
-  .zombie .z-star{display:none;font-size:18px;font-weight:900;color:#fff;text-shadow:0 0 6px rgba(0,0,0,.6);}
-  .zombie.bonus .z-star{display:block;}
-  .fish.bonus{transform:scale(1.9);z-index:8;}
-  .fish.bonus .f-label{font-size:22px;background:linear-gradient(135deg,#ffd43b,#ffb347);}
-  .fish .f-star{display:none;font-size:18px;font-weight:900;color:#fff;text-shadow:0 0 6px rgba(0,0,0,.6);}
-  .fish.bonus .f-star{display:block;}
-  .z-crosshair{position:absolute;width:36px;height:36px;border:3px solid #fff;border-radius:50%;z-index:6;pointer-events:none;box-shadow:0 0 0 2px rgba(0,0,0,.4);display:none;}
+  .z-gun{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);width:96px;height:200px;z-index:4;pointer-events:none;}
+                  .z-crosshair{position:absolute;width:36px;height:36px;border:3px solid #fff;border-radius:50%;z-index:6;pointer-events:none;box-shadow:0 0 0 2px rgba(0,0,0,.4);display:none;}
   .z-crosshair::before,.z-crosshair::after{content:"";position:absolute;background:#ff6b6b;}
   .z-crosshair::before{left:15px;top:-9px;width:3px;height:54px;}
   .z-crosshair::after{top:15px;left:-9px;height:3px;width:54px;}
@@ -466,7 +458,7 @@
           <div class="z-house">🏠</div>
           <div class="z-prompt" id="zPrompt"></div>
           <div class="z-zone" id="zZone"></div>
-          <div class="z-gun"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 100" width="196" height="92" style="filter:drop-shadow(0 3px 5px rgba(0,0,0,.4));">
+          <div class="z-gun"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 200" width="96" height="200" style="filter:drop-shadow(0 3px 5px rgba(0,0,0,.4));">
   <defs>
     <linearGradient id="gpSlide" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#e9edf2"/><stop offset=".42" stop-color="#aeb8c4"/><stop offset="1" stop-color="#4d5866"/>
@@ -481,44 +473,39 @@
       <stop offset="0" stop-color="#7a8794"/><stop offset="1" stop-color="#39424b"/>
     </linearGradient>
   </defs>
-  <!-- 套筒 slide -->
-  <path d="M20 26 L172 26 Q186 26 189 34 L189 42 Q189 50 178 50 L26 50 Q18 50 18 42 L18 32 Q18 26 20 26 Z" fill="url(#gpSlide)" stroke="#20262c" stroke-width="1.2"/>
-  <!-- 套筒顶部高光 -->
-  <rect x="22" y="27" width="158" height="3.4" rx="1.7" fill="#f4f7fa" opacity=".9"/>
-  <!-- 抛壳窗 -->
-  <rect x="104" y="30" width="30" height="11" rx="2" fill="#14181c" stroke="#3a434d" stroke-width="1"/>
-  <!-- 后部防滑纹 -->
+  <!-- 套筒 slide（竖直，枪口朝上） -->
+  <path d="M30 14 L62 14 Q70 14 70 22 L70 148 Q70 156 62 156 L30 156 Q22 156 22 148 L22 22 Q22 14 30 14 Z" fill="url(#gpSlide)" stroke="#20262c" stroke-width="1.2"/>
+  <!-- 套筒右侧高光 -->
+  <rect x="25" y="16" width="47" height="3.4" rx="1.7" fill="#f4f7fa" opacity=".9"/>
+  <!-- 抛壳窗（右侧） -->
+  <rect x="66" y="52" width="8" height="30" rx="2" fill="#14181c" stroke="#3a434d" stroke-width="1"/>
+  <!-- 套筒后部防滑纹 -->
   <g fill="#232a31">
-    <rect x="26" y="30" width="2.6" height="12" rx="1"/><rect x="31" y="30" width="2.6" height="12" rx="1"/><rect x="36" y="30" width="2.6" height="12" rx="1"/><rect x="41" y="30" width="2.6" height="12" rx="1"/><rect x="46" y="30" width="2.6" height="12" rx="1"/>
+    <rect x="26" y="118" width="44" height="2.6" rx="1"/><rect x="26" y="124" width="44" height="2.6" rx="1"/><rect x="26" y="130" width="44" height="2.6" rx="1"/><rect x="26" y="136" width="44" height="2.6" rx="1"/><rect x="26" y="142" width="44" height="2.6" rx="1"/>
   </g>
-  <!-- 准星/照门 -->
-  <rect x="176" y="20" width="5" height="6" rx="1" fill="#1c2127"/>
-  <rect x="178" y="24" width="3" height="4" fill="#0f1215"/>
-  <rect x="15" y="21" width="9" height="5" rx="1.5" fill="#1c2127"/>
+  <!-- 准星（上）/ 照门（下） -->
+  <rect x="42" y="6" width="8" height="8" rx="1" fill="#1c2127"/>
+  <rect x="39" y="152" width="13" height="5" rx="1.5" fill="#1c2127"/>
   <!-- 枪口 -->
-  <ellipse cx="188" cy="40" rx="4.5" ry="6" fill="#0c0f12"/>
-  <ellipse cx="189.6" cy="40" rx="2" ry="3" fill="#05070a"/>
-  <!-- 复进杆前端 -->
-  <rect x="160" y="34" width="26" height="7" rx="2" fill="#2c333b" stroke="#1a2026" stroke-width="1"/>
+  <ellipse cx="46" cy="20" rx="6" ry="4.5" fill="#0c0f12"/>
+  <ellipse cx="46" cy="21.6" rx="2.6" ry="2" fill="#05070a"/>
   <!-- 下机匣 frame -->
-  <path d="M22 50 L146 50 L146 62 L120 62 L120 56 L100 56 L100 62 L60 62 L60 66 Q60 72 54 72 L40 72 Q30 72 30 64 L30 58 Q30 50 22 50 Z" fill="url(#gpFrame)" stroke="#14181c" stroke-width="1.2"/>
-  <!-- 扳机护圈 -->
-  <path d="M96 56 L128 56 Q138 56 138 64 L138 72 Q138 84 126 84 L102 84 Q90 84 90 72 L90 64 Q90 56 96 56 Z" fill="url(#gpFrame)" stroke="#14181c" stroke-width="1.2"/>
+  <rect x="26" y="156" width="40" height="14" rx="3" fill="url(#gpFrame)" stroke="#14181c" stroke-width="1.2"/>
+  <!-- 扳机护圈（右侧） -->
+  <path d="M62 168 L82 168 Q92 168 92 176 L92 184 Q92 196 78 196 L58 196 Q48 196 48 184 L48 176 Q48 168 62 168 Z" fill="url(#gpFrame)" stroke="#14181c" stroke-width="1.2"/>
   <!-- 扳机 -->
-  <path d="M110 58 Q114 64 110 70 Q106 76 100 76" fill="none" stroke="url(#gpTrigger)" stroke-width="5" stroke-linecap="round"/>
-  <!-- 握把 -->
-  <path d="M56 64 L136 64 L122 96 Q120 99 116 99 L70 99 Q66 99 64 96 Z" fill="url(#gpGrip)" stroke="#0e1115" stroke-width="1.2"/>
+  <path d="M72 172 Q80 176 76 184 Q72 192 64 192" fill="none" stroke="url(#gpTrigger)" stroke-width="5" stroke-linecap="round"/>
+  <!-- 握把（朝下） -->
+  <path d="M30 170 L66 170 L58 208 Q56 214 50 214 L40 214 Q34 214 32 208 Z" fill="url(#gpGrip)" stroke="#0e1115" stroke-width="1.2"/>
   <!-- 握把防滑纹理 -->
-  <g stroke="#3a424c" stroke-width="1.4" opacity=".8">
-    <line x1="66" y1="72" x2="130" y2="72"/><line x1="65" y1="78" x2="127" y2="78"/><line x1="64" y1="84" x2="124" y2="84"/><line x1="64" y1="90" x2="121" y2="90"/><line x1="65" y1="95" x2="118" y2="95"/>
+  <g stroke="#3a424c" stroke-width="1.6" opacity=".8">
+    <line x1="34" y1="176" x2="62" y2="176"/><line x1="33" y1="182" x2="60" y2="182"/><line x1="33" y1="188" x2="58" y2="188"/><line x1="33" y1="194" x2="56" y2="194"/><line x1="34" y1="200" x2="54" y2="200"/><line x1="35" y1="206" x2="52" y2="206"/>
   </g>
   <!-- 弹匣底盖 -->
-  <rect x="70" y="97" width="50" height="3" rx="1.5" fill="#0a0d10"/>
-  <!-- 空仓挂机/分解销 -->
-  <circle cx="120" cy="52" r="2.4" fill="#14181c" stroke="#7a8794" stroke-width=".8"/>
-  <circle cx="52" cy="52" r="2" fill="#14181c" stroke="#7a8794" stroke-width=".8"/>
-  <!-- 底部高光 -->
-  <rect x="24" y="48" width="120" height="2" fill="#000" opacity=".25"/>
+  <rect x="36" y="212" width="22" height="5" rx="2" fill="#0a0d10"/>
+  <!-- 分解销 -->
+  <circle cx="34" cy="163" r="2.4" fill="#14181c" stroke="#7a8794" stroke-width=".8"/>
+  <circle cx="58" cy="163" r="2" fill="#14181c" stroke="#7a8794" stroke-width=".8"/>
 </svg></div>
           <div class="z-crosshair" id="zCross"></div>
           <div class="z-hit" id="zHit"></div>
@@ -722,7 +709,7 @@ function speakChunks(chunks,opts){
 
 
 
-var APP_VERSION='v27'; // 当前版本号，每次发布递增
+var APP_VERSION='v28'; // 当前版本号，每次发布递增
 var LETTER_SPOKEN={
  A:'ay',B:'bee',C:'see',D:'dee',E:'ee',F:'eff',G:'gee',H:'aitch',
  I:'eye',J:'jay',K:'kay',L:'el',M:'em',N:'en',O:'oh',P:'pee',
@@ -1628,11 +1615,10 @@ function stopGames(){
   if(zg)zg.style.display='none';if(fg)fg.style.display='none';if(gp)gp.style.display='';
 }
 /* ---- 打僵尸 ---- */
-var zScore=0,zLives=10,zTime=60,zTimer=null,zMoveTimer=null,zBusy=false,zRound=null,zItems=[],zHitCount=0,zBonus=false;
+var zScore=0,zLives=10,zTime=60,zTimer=null,zMoveTimer=null,zBusy=false,zRound=null,zItems=[],zHitCount=0;
 function updateZLives(){var s='';for(var i=0;i<10;i++){s+=(i<zLives?'❤️':'🖤');}$('zLives').textContent=s;}
 function spawnZombieRound(){
   if(zLives<=0||zTime<=0)return;
-  zBonus=false;
   zRound=gamePickRound();
   $('zPrompt').innerHTML=gamePromptHTML(zRound.li);
   gameSpeak(zRound.li);
@@ -1672,48 +1658,8 @@ function moveZombies(){
     }
   }
 }
-function spawnZombieBonus(){
-  if(zLives<=0||zTime<=0)return;
-  zBonus=true;
-  zRound=gamePickRound();
-  $('zPrompt').innerHTML='<div style="font-weight:900;color:#ffd43b;text-shadow:0 0 6px rgba(0,0,0,.5);">🎁 大奖僵尸！打中得 ★3</div>'+gamePromptHTML(zRound.li);
-  gameSpeak(zRound.li);
-  $('zZone').innerHTML='';
-  zItems=[];
-  var w=$('zScene').clientWidth||800;
-  var L=LETTERS[zRound.li];
-  var label=gMode==='case'?L.l:L.w[0][1];
-  var d=document.createElement('div');
-  d.className='zombie bonus';
-  d.setAttribute('data-li',zRound.li);
-  d.setAttribute('data-speed','1.3');
-  d.style.top='20px';
-  d.innerHTML='<span class="z-star">★3</span><span class="z-face">🧟</span>'+(gMode==='case'?'<span class="z-label">'+label+'</span>':'<span class="z-label" style="font-size:28px;">'+label+'</span>');
-  d.setAttribute('data-x',String(w-120));
-  d.style.left=(w-120)+'px';
-  $('zZone').appendChild(d);
-  zItems.push(d);
-  // 干扰僵尸
-  var others=shuffle(LETTERS.map(function(_,i){return i;}).filter(function(x){return x!==zRound.li;})).slice(0,3);
-  others.forEach(function(oi,i){
-    var OL=LETTERS[oi];
-    var lbl=gMode==='case'?OL.l:OL.w[0][1];
-    var od=document.createElement('div');
-    od.className='zombie';
-    od.setAttribute('data-li',oi);
-    od.setAttribute('data-speed',String((1.2+Math.random()*0.7).toFixed(2)));
-    od.style.top=(115+i*66)+'px';
-    od.innerHTML='<span class="z-face">🧟</span>'+(gMode==='case'?'<span class="z-label">'+lbl+'</span>':'<span class="z-label" style="font-size:28px;">'+lbl+'</span>');
-    od.setAttribute('data-x',String(w-80-i*30));
-    od.style.left=(w-80-i*30)+'px';
-    $('zZone').appendChild(od);
-    zItems.push(od);
-  });
-  if(zMoveTimer)clearInterval(zMoveTimer);
-  zMoveTimer=setInterval(moveZombies,50);
-}
 function startZombie(){
-  zScore=0;zLives=10;zTime=60;zBusy=false;zHitCount=0;zBonus=false;
+  zScore=0;zLives=10;zTime=60;zBusy=false;zHitCount=0;
   $('zombieGame').style.display='';$('gamePick').style.display='none';
   $('zScore').textContent='得分 0';updateZLives();$('zTime').textContent='60s';
   spawnZombieRound();
@@ -1732,19 +1678,8 @@ $('zZone').addEventListener('click',function(e){
   var li=Number(b.getAttribute('data-li'));
   playShot();
   if(li===zRound.li){
-    if(zBonus){
-      zScore+=30;$('zScore').textContent='得分 '+zScore;
-      addStars(3);confetti();showCeleb(3,'大奖到手！');
-      playCorrect();
-      b.classList.add('boom');b.setAttribute('data-dead','1');
-      zBonus=false;
-      zBusy=true;
-      setTimeout(function(){zBusy=false;spawnZombieRound();},900);
-      return;
-    }
     zScore+=10;$('zScore').textContent='得分 '+zScore;
     zHitCount++;
-    if(zHitCount%5===0){spawnZombieBonus();return;}
     playZombieScream();
     var hit=$('zHit');
     hit.textContent='配对成功 ✓';
@@ -1782,11 +1717,10 @@ $('zQuit').addEventListener('click',function(){
   $('zombieGame').style.display='none';$('gamePick').style.display='';
 });
 /* ---- 钓鱼 ---- */
-var fScore=0,fLives=10,fTime=60,fTimer=null,fMoveTimer=null,fBusy=false,fRound=null,fFish=[],fHitCount=0,fBonus=false;
+var fScore=0,fLives=10,fTime=60,fTimer=null,fMoveTimer=null,fBusy=false,fRound=null,fFish=[],fHitCount=0;
 function updateFLives(){var s='';for(var i=0;i<10;i++){s+=(i<fLives?'❤️':'🖤');}$('fLives').textContent=s;}
 function spawnFishRound(){
   if(fLives<=0||fTime<=0)return;
-  fBonus=false;
   fRound=gamePickRound();
   var others=shuffle(LETTERS.map(function(_,i){return i;}).filter(function(x){return x!==fRound.li;})).slice(0,5);
   var lis=shuffle([fRound.li].concat(others));
@@ -1826,46 +1760,8 @@ function moveFish(){
     }
   }
 }
-function spawnFishBonus(){
-  if(fLives<=0||fTime<=0)return;
-  fBonus=true;
-  fRound=gamePickRound();
-  $('fPrompt').innerHTML='<div style="font-weight:900;color:#ffd43b;text-shadow:0 0 6px rgba(0,0,0,.5);">🎁 大奖鱼！钓到得 ★3</div>'+gamePromptHTML(fRound.li);
-  gameSpeak(fRound.li);
-  $('fZone').innerHTML='';
-  fFish=[];
-  var L=LETTERS[fRound.li];
-  var label=gMode==='case'?L.l:L.w[0][1];
-  var d=document.createElement('div');
-  d.className='fish bonus';
-  d.setAttribute('data-li',fRound.li);
-  d.setAttribute('data-x','38');d.setAttribute('data-y','12');
-  d.setAttribute('data-dir','1');
-  d.style.left='38%';d.style.top='12%';
-  d.innerHTML='<span class="f-star">★3</span><span class="f-face">🐋</span><span class="f-label"'+(gMode==='case'?'':' style="font-size:26px;"')+'>'+label+'</span>';
-  $('fZone').appendChild(d);
-  fFish.push(d);
-  // 干扰鱼
-  var others=shuffle(LETTERS.map(function(_,i){return i;}).filter(function(x){return x!==fRound.li;})).slice(0,3);
-  others.forEach(function(oi){
-    var OL=LETTERS[oi];
-    var lbl=gMode==='case'?OL.l:OL.w[0][1];
-    var od=document.createElement('div');
-    od.className='fish';
-    od.setAttribute('data-li',oi);
-    var x=6+Math.random()*80,y=42+Math.random()*45;
-    od.setAttribute('data-x',String(x));od.setAttribute('data-y',String(y));
-    od.setAttribute('data-dir',Math.random()<0.5?'1':'-1');
-    od.style.left=x+'%';od.style.top=y+'%';
-    od.innerHTML='<span class="f-face">🐟</span><span class="f-label"'+(gMode==='case'?'':' style="font-size:26px;"')+'>'+lbl+'</span>';
-    $('fZone').appendChild(od);
-    fFish.push(od);
-  });
-  if(fMoveTimer)clearInterval(fMoveTimer);
-  fMoveTimer=setInterval(moveFish,60);
-}
 function startFish(){
-  fScore=0;fLives=10;fTime=60;fBusy=false;fHitCount=0;fBonus=false;
+  fScore=0;fLives=10;fTime=60;fBusy=false;fHitCount=0;
   $('fishGame').style.display='';$('gamePick').style.display='none';
   $('fScore').textContent='得分 0';updateFLives();$('fTime').textContent='60s';
   spawnFishRound();
@@ -1876,19 +1772,8 @@ $('fZone').addEventListener('click',function(e){
   var b=e.target.closest('.fish');if(!b||fBusy||fLives<=0)return;
   var li=Number(b.getAttribute('data-li'));
   if(li===fRound.li){
-    if(fBonus){
-      fScore+=30;$('fScore').textContent='得分 '+fScore;
-      addStars(3);confetti();showCeleb(3,'大奖到手！');
-      playCorrect();
-      b.classList.add('caught');b.setAttribute('data-dead','1');
-      fBonus=false;
-      fBusy=true;
-      setTimeout(function(){fBusy=false;spawnFishRound();},900);
-      return;
-    }
     fScore+=10;$('fScore').textContent='得分 '+fScore;
     fHitCount++;
-    if(fHitCount%5===0){spawnFishBonus();return;}
     playCatch();
     var rod=$('fRod');if(rod)rod.style.transform='rotate(-35deg)';
     setTimeout(function(){if($('fRod'))$('fRod').style.transform='rotate(18deg)';},500);
