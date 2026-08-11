@@ -221,6 +221,13 @@
   .game-entry .big{font-size:44px;display:block;margin-bottom:8px;}
   .game-hud{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;background:#fff;border-radius:14px;padding:8px 12px;box-shadow:var(--shadow);font-weight:800;font-size:14px;margin-bottom:10px;}
   .game-hud button{border:none;border-radius:10px;padding:6px 12px;font-weight:800;cursor:pointer;background:#ff6b6b;color:#fff;}
+  .z-gun{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-size:38px;z-index:4;pointer-events:none;}
+  .z-crosshair{position:absolute;width:36px;height:36px;border:3px solid #fff;border-radius:50%;z-index:6;pointer-events:none;box-shadow:0 0 0 2px rgba(0,0,0,.4);display:none;}
+  .z-crosshair::before,.z-crosshair::after{content:"";position:absolute;background:#ff6b6b;}
+  .z-crosshair::before{left:15px;top:-9px;width:3px;height:54px;}
+  .z-crosshair::after{top:15px;left:-9px;height:3px;width:54px;}
+  .z-hit{position:absolute;z-index:7;font-size:20px;font-weight:800;color:#fff;background:rgba(76,217,123,.92);border-radius:12px;padding:4px 10px;pointer-events:none;display:none;}
+  .f-rod{position:absolute;top:2px;left:16px;font-size:42px;z-index:4;transform:rotate(18deg);transition:transform .3s;pointer-events:none;}
   .z-scene{position:relative;height:340px;background:linear-gradient(180deg,#87ceeb 0%,#b7e4f7 38%,#6b8e3a 38%,#4c6b28 100%);border-radius:18px;overflow:hidden;box-shadow:var(--shadow);}
   .z-house{position:absolute;left:10px;bottom:26px;font-size:46px;z-index:2;}
   .z-prompt{position:absolute;top:8px;left:50%;transform:translateX(-50%);background:#fff;border:3px solid #ffd43b;border-radius:14px;padding:6px 14px;font-size:26px;font-weight:800;z-index:5;box-shadow:var(--shadow);text-align:center;}
@@ -452,6 +459,9 @@
           <div class="z-house">🏠</div>
           <div class="z-prompt" id="zPrompt"></div>
           <div class="z-zone" id="zZone"></div>
+          <div class="z-gun">🔫</div>
+          <div class="z-crosshair" id="zCross"></div>
+          <div class="z-hit" id="zHit"></div>
         </div>
       </div>
       <div class="game-play" id="fishGame" style="display:none;">
@@ -462,6 +472,7 @@
         <div class="f-pond" id="fPond">
           <div class="f-prompt" id="fPrompt"></div>
           <div class="f-zone" id="fZone"></div>
+          <div class="f-rod" id="fRod">🎣</div>
         </div>
       </div>
     </div>
@@ -651,7 +662,7 @@ function speakChunks(chunks,opts){
 
 
 
-var APP_VERSION='v20'; // 当前版本号，每次发布递增
+var APP_VERSION='v21'; // 当前版本号，每次发布递增
 var LETTER_SPOKEN={
  A:'ay',B:'bee',C:'see',D:'dee',E:'ee',F:'eff',G:'gee',H:'aitch',
  I:'eye',J:'jay',K:'kay',L:'el',M:'em',N:'en',O:'oh',P:'pee',
@@ -1503,6 +1514,37 @@ function gameSpeak(li){
   else{speakSound(li);}
 }
 function gameOverStars(score){return score>=300?3:(score>=150?2:1);}
+function playShot(){
+  var ac=ensureAudio();if(!ac)return;
+  try{
+    var t0=ac.currentTime,len=Math.floor(ac.sampleRate*0.15);
+    var buf=ac.createBuffer(1,len,ac.sampleRate);
+    var d=buf.getChannelData(0);
+    for(var i=0;i<len;i++){d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2);}
+    var src=ac.createBufferSource();src.buffer=buf;
+    var g=ac.createGain();g.gain.value=0.4;
+    src.connect(g);g.connect(ac.destination);src.start(t0);
+  }catch(e){}
+}
+function playZombieScream(){
+  var ac=ensureAudio();if(!ac)return;
+  try{
+    var t0=ac.currentTime;
+    var o=ac.createOscillator(),g=ac.createGain();
+    o.type='sawtooth';
+    o.frequency.setValueAtTime(880,t0);
+    o.frequency.exponentialRampToValueAtTime(260,t0+0.55);
+    var lfo=ac.createOscillator(),lg=ac.createGain();
+    lfo.frequency.value=22;lg.gain.value=70;
+    lfo.connect(lg);lg.connect(o.frequency);
+    g.gain.setValueAtTime(0.0001,t0);
+    g.gain.exponentialRampToValueAtTime(0.22,t0+0.05);
+    g.gain.exponentialRampToValueAtTime(0.0001,t0+0.6);
+    o.connect(g);g.connect(ac.destination);
+    o.start(t0);o.stop(t0+0.65);
+    lfo.start(t0);lfo.stop(t0+0.65);
+  }catch(e){}
+}
 function stopGames(){
   if(zTimer){clearInterval(zTimer);zTimer=null;}
   if(zMoveTimer){clearInterval(zMoveTimer);zMoveTimer=null;}
@@ -1564,12 +1606,26 @@ function startZombie(){
   if(zTimer)clearInterval(zTimer);
   zTimer=setInterval(function(){zTime--;$('zTime').textContent=zTime+'s';if(zTime<=0){endZombie();}},1000);
 }
+$('zScene').addEventListener('pointermove',function(e){
+  var r=$('zScene').getBoundingClientRect();
+  var ch=$('zCross');
+  ch.style.display='block';
+  ch.style.left=(e.clientX-r.left-18)+'px';
+  ch.style.top=(e.clientY-r.top-18)+'px';
+});
 $('zZone').addEventListener('click',function(e){
   var b=e.target.closest('.zombie');if(!b||zBusy||zLives<=0)return;
   var li=Number(b.getAttribute('data-li'));
+  playShot();
   if(li===zRound.li){
     zScore+=10;$('zScore').textContent='得分 '+zScore;
-    playCorrect();
+    playZombieScream();
+    var hit=$('zHit');
+    hit.textContent='配对成功 ✓';
+    hit.style.left=b.getAttribute('data-x')+'px';
+    hit.style.top=b.style.top;
+    hit.style.display='block';
+    setTimeout(function(){hit.style.display='none';},900);
     b.classList.add('boom');
     b.setAttribute('data-dead','1');
     zBusy=true;
@@ -1655,6 +1711,8 @@ $('fZone').addEventListener('click',function(e){
   if(li===fRound.li){
     fScore+=10;$('fScore').textContent='得分 '+fScore;
     playCorrect();
+    var rod=$('fRod');if(rod)rod.style.transform='rotate(-35deg)';
+    setTimeout(function(){if($('fRod'))$('fRod').style.transform='rotate(18deg)';},500);
     b.classList.add('caught');
     b.setAttribute('data-dead','1');
     fBusy=true;
