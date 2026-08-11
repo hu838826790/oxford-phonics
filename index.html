@@ -662,7 +662,7 @@ function speakChunks(chunks,opts){
 
 
 
-var APP_VERSION='v21'; // 当前版本号，每次发布递增
+var APP_VERSION='v22'; // 当前版本号，每次发布递增
 var LETTER_SPOKEN={
  A:'ay',B:'bee',C:'see',D:'dee',E:'ee',F:'eff',G:'gee',H:'aitch',
  I:'eye',J:'jay',K:'kay',L:'el',M:'em',N:'en',O:'oh',P:'pee',
@@ -1526,6 +1526,20 @@ function playShot(){
     src.connect(g);g.connect(ac.destination);src.start(t0);
   }catch(e){}
 }
+function playCatch(){
+  var ac=ensureAudio();if(!ac)return;
+  try{
+    var t0=ac.currentTime,len=Math.floor(ac.sampleRate*0.12);
+    var buf=ac.createBuffer(1,len,ac.sampleRate);
+    var d=buf.getChannelData(0);
+    for(var i=0;i<len;i++){d[i]=(Math.random()*2-1)*Math.pow(1-i/len,1.5);}
+    var src=ac.createBufferSource();src.buffer=buf;
+    var g=ac.createGain();g.gain.value=0.25;
+    src.connect(g);g.connect(ac.destination);src.start(t0);
+  }catch(e){}
+  var seq=[659.25,783.99,987.77,1318.51];
+  for(var i=0;i<seq.length;i++){playTone(seq[i],0.15,'sine',0.28,i*0.11);}
+}
 function playZombieScream(){
   var ac=ensureAudio();if(!ac)return;
   try{
@@ -1710,7 +1724,7 @@ $('fZone').addEventListener('click',function(e){
   var li=Number(b.getAttribute('data-li'));
   if(li===fRound.li){
     fScore+=10;$('fScore').textContent='得分 '+fScore;
-    playCorrect();
+    playCatch();
     var rod=$('fRod');if(rod)rod.style.transform='rotate(-35deg)';
     setTimeout(function(){if($('fRod'))$('fRod').style.transform='rotate(18deg)';},500);
     b.classList.add('caught');
