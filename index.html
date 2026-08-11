@@ -674,7 +674,7 @@ function speakChunks(chunks,opts){
 
 
 
-var APP_VERSION='v23'; // 当前版本号，每次发布递增
+var APP_VERSION='v24'; // 当前版本号，每次发布递增
 var LETTER_SPOKEN={
  A:'ay',B:'bee',C:'see',D:'dee',E:'ee',F:'eff',G:'gee',H:'aitch',
  I:'eye',J:'jay',K:'kay',L:'el',M:'em',N:'en',O:'oh',P:'pee',
@@ -1596,7 +1596,7 @@ function spawnZombieRound(){
     d.className='zombie';
     d.setAttribute('data-li',it.li);
     d.setAttribute('data-speed',String((1.1+Math.random()*1.3).toFixed(2)));
-    d.style.top=(6+i*66)+'px';
+    d.style.top=(4+i*58)+'px';
     d.innerHTML='<span class="z-face">🧟</span>'+(gMode==='case'?'<span class="z-label">'+it.label+'</span>':'<span class="z-label" style="font-size:28px;">'+it.label+'</span>');
     d.setAttribute('data-x',String(w-80));
     d.style.left=(w-80)+'px';
