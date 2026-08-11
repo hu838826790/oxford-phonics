@@ -209,6 +209,48 @@
   #writeCeleb .wc-msg{font-size:26px;font-weight:800;color:var(--ink);margin-top:8px;}
   .app-footer{text-align:center;font-size:12px;color:var(--muted);font-weight:700;padding:14px 0 4px;}
   .daily-mini{background:#fff;border:2px solid #f5d76e;border-radius:12px;padding:5px 9px;font-size:14px;box-shadow:var(--shadow);}
+
+  .game-mode{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+  .game-mode button{flex:1;min-width:110px;border:none;border-radius:14px;padding:10px;font-size:14px;font-weight:800;cursor:pointer;background:#fff;box-shadow:var(--shadow);}
+  .game-mode button.active{background:linear-gradient(135deg,#4cd97b,#20c997);color:#fff;}
+  .game-pick{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+  .game-entry{border:none;border-radius:22px;padding:26px 34px;font-size:20px;font-weight:800;cursor:pointer;color:#fff;box-shadow:var(--shadow);transition:.15s;}
+  .game-entry:active{transform:scale(.95);}
+  .game-entry.zombie-btn{background:linear-gradient(135deg,#6b8e3a,#2f3b1e);}
+  .game-entry.fish-btn{background:linear-gradient(135deg,#4da6ff,#1971c2);}
+  .game-entry .big{font-size:44px;display:block;margin-bottom:8px;}
+  .game-hud{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;background:#fff;border-radius:14px;padding:8px 12px;box-shadow:var(--shadow);font-weight:800;font-size:14px;margin-bottom:10px;}
+  .game-hud button{border:none;border-radius:10px;padding:6px 12px;font-weight:800;cursor:pointer;background:#ff6b6b;color:#fff;}
+  .z-scene{position:relative;height:340px;background:linear-gradient(180deg,#87ceeb 0%,#b7e4f7 38%,#6b8e3a 38%,#4c6b28 100%);border-radius:18px;overflow:hidden;box-shadow:var(--shadow);}
+  .z-house{position:absolute;left:10px;bottom:26px;font-size:46px;z-index:2;}
+  .z-prompt{position:absolute;top:8px;left:50%;transform:translateX(-50%);background:#fff;border:3px solid #ffd43b;border-radius:14px;padding:6px 14px;font-size:26px;font-weight:800;z-index:5;box-shadow:var(--shadow);text-align:center;}
+  .z-prompt .gp-emoji{font-size:36px;}
+  .z-prompt .gp-replay,.f-prompt .gp-replay{display:block;margin:4px auto 0;border:none;border-radius:10px;padding:4px 12px;font-size:13px;font-weight:800;cursor:pointer;background:#ffd43b;color:#4a3728;}
+  .z-zone{position:absolute;top:64px;bottom:16px;left:0;right:0;}
+  .zombie{position:absolute;width:72px;text-align:center;cursor:pointer;user-select:none;z-index:3;}
+  .zombie .z-label{display:block;background:#fff;border-radius:10px;padding:3px 6px;font-size:22px;font-weight:800;color:var(--ink);box-shadow:var(--shadow);}
+  .zombie .z-word{display:block;background:#fff;border-radius:10px;padding:2px 6px;font-size:14px;font-weight:800;color:var(--ink);box-shadow:var(--shadow);}
+  .zombie .z-face{font-size:40px;display:block;line-height:1;}
+  .zombie.boom .z-face{animation:boom .5s forwards;}
+  @keyframes boom{0%{transform:scale(1);}30%{transform:scale(1.4) rotate(20deg);}100%{transform:scale(0);opacity:0;}}
+  .zombie.wrong .z-face{animation:shake .4s;}
+  .f-pond{position:relative;height:340px;background:linear-gradient(180deg,#87ceeb 0%,#aee2ff 18%,#1c7ed6 18%,#1565b0 100%);border-radius:18px;overflow:hidden;box-shadow:var(--shadow);}
+  .f-prompt{position:absolute;top:8px;left:50%;transform:translateX(-50%);background:#fff;border:3px solid #ffd43b;border-radius:14px;padding:6px 14px;font-size:26px;font-weight:800;z-index:5;box-shadow:var(--shadow);text-align:center;}
+  .f-prompt .gp-emoji{font-size:36px;}
+  .f-zone{position:absolute;top:74px;bottom:8px;left:0;right:0;}
+  .fish{position:absolute;width:76px;text-align:center;cursor:pointer;user-select:none;z-index:3;}
+  .fish .f-label{display:block;background:#fff;border-radius:10px;padding:3px 6px;font-size:16px;font-weight:800;color:var(--ink);box-shadow:var(--shadow);}
+  .fish .f-face{font-size:32px;display:block;line-height:1;}
+  .fish.caught .f-face{animation:fishup .6s ease forwards;}
+  @keyframes fishup{0%{transform:translateY(0);}60%{transform:translateY(-46px) rotate(-18deg);}100%{transform:translateY(-76px) rotate(-30deg);opacity:0;}}
+  .fish.wrong .f-face{animation:shake .4s;}
+  .game-end{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:90;background:rgba(74,55,40,.45);}
+  .game-end .ge-box{background:#fff;border-radius:24px;padding:24px 34px;text-align:center;box-shadow:var(--shadow);}
+  .game-end .ge-big{font-size:60px;}
+  .game-end h3{margin:6px 0;}
+  .game-end .ge-score{color:var(--muted);font-weight:700;margin-bottom:8px;}
+  .game-end button{border:none;border-radius:14px;padding:10px 20px;font-size:15px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,#ffb347,#ff6b6b);color:#fff;box-shadow:var(--shadow);margin:4px;}
+  .game-end #geBack{background:#ced4da;color:#495057;}
   #toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(30px);background:rgba(74,55,40,.94);color:#fff;padding:14px 22px;border-radius:16px;font-size:16px;font-weight:800;opacity:0;transition:.25s;z-index:99;pointer-events:none;max-width:88vw;text-align:center;}
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
   .confetti{position:fixed;top:-16px;width:12px;height:12px;border-radius:3px;z-index:98;pointer-events:none;animation:fall 1.8s linear forwards;}
@@ -235,6 +277,7 @@
     <button data-tab="quiz"><span class="ic">🎯</span>练习</button>
     <button data-tab="match"><span class="ic">🃏</span>配对</button>
     <button data-tab="sent"><span class="ic">📝</span>句型</button>
+    <button data-tab="games"><span class="ic">🎮</span>游戏</button>
   </nav>
 
   <!-- 学习 -->
@@ -387,6 +430,52 @@
       </div>
     </div>
   </section>
+
+  <!-- 游戏 -->
+  <section id="games">
+    <div class="card">
+      <div class="game-mode">
+        <button data-gmode="case" class="active">🔤 大小写配对</button>
+        <button data-gmode="pic">🖼️ 单词配图</button>
+        <button data-gmode="hand">✍️ 手写配单词</button>
+      </div>
+      <div class="game-pick" id="gamePick">
+        <button class="game-entry zombie-btn" id="enterZombie"><span class="big">🧟</span>打僵尸</button>
+        <button class="game-entry fish-btn" id="enterFish"><span class="big">🎣</span>钓鱼</button>
+      </div>
+      <div class="game-play" id="zombieGame" style="display:none;">
+        <div class="game-hud">
+          <span>🧟 打僵尸</span><span id="zScore">得分 0</span><span id="zLives">❤️❤️❤️</span><span id="zTime">60s</span>
+          <button id="zQuit">✖ 退出</button>
+        </div>
+        <div class="z-scene" id="zScene">
+          <div class="z-house">🏠</div>
+          <div class="z-prompt" id="zPrompt"></div>
+          <div class="z-zone" id="zZone"></div>
+        </div>
+      </div>
+      <div class="game-play" id="fishGame" style="display:none;">
+        <div class="game-hud">
+          <span>🎣 钓鱼</span><span id="fScore">得分 0</span><span id="fLives">❤️❤️❤️</span><span id="fTime">60s</span>
+          <button id="fQuit">✖ 退出</button>
+        </div>
+        <div class="f-pond" id="fPond">
+          <div class="f-prompt" id="fPrompt"></div>
+          <div class="f-zone" id="fZone"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="game-end" id="gameEnd" style="display:none;">
+    <div class="ge-box">
+      <div class="ge-big" id="geBig">🧟</div>
+      <h3 id="geTitle">游戏结束</h3>
+      <div class="ge-score" id="geScore"></div>
+      <div class="stars-row" id="geStars"></div>
+      <button id="geAgain">🔄 再玩一次</button>
+      <button id="geBack">🎮 选游戏</button>
+    </div>
+  </div>
 </div>
 <div class="app-footer">🚀 小程序开发归属：嘉兴辰星留学-HU · <span id="verTag"></span></div>
 <div id="writeCeleb" style="display:none;"><div class="wc-box"><div class="wc-stars" id="wcStars"></div><div class="wc-msg" id="wcMsg"></div></div></div>
@@ -562,7 +651,7 @@ function speakChunks(chunks,opts){
 
 
 
-var APP_VERSION='v19'; // 当前版本号，每次发布递增
+var APP_VERSION='v20'; // 当前版本号，每次发布递增
 var LETTER_SPOKEN={
  A:'ay',B:'bee',C:'see',D:'dee',E:'ee',F:'eff',G:'gee',H:'aitch',
  I:'eye',J:'jay',K:'kay',L:'el',M:'em',N:'en',O:'oh',P:'pee',
@@ -1375,6 +1464,254 @@ $('sentOrder').addEventListener('click',function(e){
   }
 });
 
+/* ================= 游戏：打僵尸 / 钓鱼 ================= */
+var gMode='case';
+function flattenStrokesFor(dict,key){
+  var arr=[];
+  if(dict&&dict[key]){dict[key].forEach(function(grp){grp.forEach(function(d){arr.push(d);});});}
+  return arr;
+}
+function handwrittenSVG(letter){
+  var paths=flattenStrokesFor(STROKES_LO,String(letter).toLowerCase());
+  var out='<svg viewBox="0 0 100 100" width="54" height="54" style="display:block;margin:0 auto;"><g fill="none" stroke="#4a3728" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">';
+  paths.forEach(function(d){out+='<path d="'+d+'"/>';});
+  out+='</g></svg>';
+  return out;
+}
+function gamePickRound(){
+  var li=Math.floor(Math.random()*26);
+  var others=shuffle(LETTERS.map(function(_,i){return i;}).filter(function(x){return x!==li;})).slice(0,3);
+  var lis=shuffle([li].concat(others));
+  var items=lis.map(function(x){
+    var L=LETTERS[x];
+    if(gMode==='case'){return {li:x,label:L.l};}
+    return {li:x,label:L.w[0][0]};
+  });
+  return {li:li,items:items};
+}
+function gamePromptHTML(li){
+  var L=LETTERS[li];
+  var body='';
+  if(gMode==='case'){body='<div style="font-size:36px;line-height:1.1;">'+L.n+'</div>';}
+  else if(gMode==='pic'){body='<div class="gp-emoji">'+L.w[0][1]+'</div>';}
+  else{body=handwrittenSVG(L.l);}
+  return body+'<button class="gp-replay" data-replay="1">🔊 再听一遍</button>';
+}
+function gameSpeak(li){
+  if(gMode==='case'){speakLetterName(li);}
+  else if(gMode==='pic'){playWord(LETTERS[li].w[0][0]);}
+  else{speakSound(li);}
+}
+function gameOverStars(score){return score>=300?3:(score>=150?2:1);}
+function stopGames(){
+  if(zTimer){clearInterval(zTimer);zTimer=null;}
+  if(zMoveTimer){clearInterval(zMoveTimer);zMoveTimer=null;}
+  if(fTimer){clearInterval(fTimer);fTimer=null;}
+  if(fMoveTimer){clearInterval(fMoveTimer);fMoveTimer=null;}
+  var ge=$('gameEnd');if(ge)ge.style.display='none';
+  var zg=$('zombieGame'),fg=$('fishGame'),gp=$('gamePick');
+  if(zg)zg.style.display='none';if(fg)fg.style.display='none';if(gp)gp.style.display='';
+}
+/* ---- 打僵尸 ---- */
+var zScore=0,zLives=3,zTime=60,zTimer=null,zMoveTimer=null,zBusy=false,zRound=null,zItems=[];
+function updateZLives(){var s='';for(var i=0;i<3;i++){s+=(i<zLives?'❤️':'🖤');}$('zLives').textContent=s;}
+function spawnZombieRound(){
+  if(zLives<=0||zTime<=0)return;
+  zRound=gamePickRound();
+  $('zPrompt').innerHTML=gamePromptHTML(zRound.li);
+  gameSpeak(zRound.li);
+  $('zZone').innerHTML='';
+  zItems=[];
+  var w=$('zScene').clientWidth||800;
+  zRound.items.forEach(function(it,i){
+    var d=document.createElement('div');
+    d.className='zombie';
+    d.setAttribute('data-li',it.li);
+    d.setAttribute('data-speed',String((1.1+Math.random()*1.3).toFixed(2)));
+    d.style.top=(16+Math.floor(Math.random()*5)*52)+'px';
+    d.innerHTML='<span class="z-face">🧟</span>'+(gMode==='case'?'<span class="z-label">'+it.label+'</span>':'<span class="z-word">'+it.label+'</span>');
+    d.setAttribute('data-x',String(w-80));
+    d.style.left=(w-80)+'px';
+    $('zZone').appendChild(d);
+    zItems.push(d);
+  });
+  if(zMoveTimer)clearInterval(zMoveTimer);
+  zMoveTimer=setInterval(moveZombies,50);
+}
+function moveZombies(){
+  for(var i=zItems.length-1;i>=0;i--){
+    var d=zItems[i];
+    if(!d||d.getAttribute('data-dead'))continue;
+    var left=Number(d.getAttribute('data-x'))-Number(d.getAttribute('data-speed'));
+    d.setAttribute('data-x',String(left));
+    d.style.left=left+'px';
+    if(left<=72){
+      d.setAttribute('data-dead','1');
+      if(d.parentNode)d.parentNode.removeChild(d);
+      zItems.splice(i,1);
+      zLives--;updateZLives();playWrong();
+      if(zLives<=0){endZombie();return;}
+      spawnZombieRound();
+      return;
+    }
+  }
+}
+function startZombie(){
+  zScore=0;zLives=3;zTime=60;zBusy=false;
+  $('zombieGame').style.display='';$('gamePick').style.display='none';
+  $('zScore').textContent='得分 0';updateZLives();$('zTime').textContent='60s';
+  spawnZombieRound();
+  if(zTimer)clearInterval(zTimer);
+  zTimer=setInterval(function(){zTime--;$('zTime').textContent=zTime+'s';if(zTime<=0){endZombie();}},1000);
+}
+$('zZone').addEventListener('click',function(e){
+  var b=e.target.closest('.zombie');if(!b||zBusy||zLives<=0)return;
+  var li=Number(b.getAttribute('data-li'));
+  if(li===zRound.li){
+    zScore+=10;$('zScore').textContent='得分 '+zScore;
+    playCorrect();
+    b.classList.add('boom');
+    b.setAttribute('data-dead','1');
+    zBusy=true;
+    setTimeout(function(){zBusy=false;spawnZombieRound();},520);
+  }else{
+    playWrong();
+    b.classList.add('wrong');
+    setTimeout(function(){b.classList.remove('wrong');},400);
+  }
+});
+$('zPrompt').addEventListener('click',function(e){
+  if(e.target.closest('[data-replay]')){gameSpeak(zRound.li);}
+});
+function endZombie(){
+  if(zTimer)clearInterval(zTimer);zTimer=null;
+  if(zMoveTimer)clearInterval(zMoveTimer);zMoveTimer=null;
+  $('zZone').innerHTML='';
+  var stars=gameOverStars(zScore);
+  addStars(stars);
+  if(stars===3)confetti();
+  showGameEnd('zombie',zScore,stars);
+}
+$('zQuit').addEventListener('click',function(){
+  if(zTimer)clearInterval(zTimer);zTimer=null;
+  if(zMoveTimer)clearInterval(zMoveTimer);zMoveTimer=null;
+  $('zombieGame').style.display='none';$('gamePick').style.display='';
+});
+/* ---- 钓鱼 ---- */
+var fScore=0,fLives=3,fTime=60,fTimer=null,fMoveTimer=null,fBusy=false,fRound=null,fFish=[];
+function updateFLives(){var s='';for(var i=0;i<3;i++){s+=(i<fLives?'❤️':'🖤');}$('fLives').textContent=s;}
+function spawnFishRound(){
+  if(fLives<=0||fTime<=0)return;
+  fRound=gamePickRound();
+  var others=shuffle(LETTERS.map(function(_,i){return i;}).filter(function(x){return x!==fRound.li;})).slice(0,5);
+  var lis=shuffle([fRound.li].concat(others));
+  $('fPrompt').innerHTML=gamePromptHTML(fRound.li);
+  gameSpeak(fRound.li);
+  $('fZone').innerHTML='';
+  fFish=[];
+  lis.forEach(function(li){
+    var L=LETTERS[li];
+    var label=gMode==='case'?L.l:L.w[0][0];
+    var d=document.createElement('div');
+    d.className='fish';
+    d.setAttribute('data-li',li);
+    var x=6+Math.random()*78,y=6+Math.random()*58;
+    d.setAttribute('data-x',String(x));d.setAttribute('data-y',String(y));
+    d.setAttribute('data-dir',Math.random()<0.5?'1':'-1');
+    d.style.left=x+'%';d.style.top=y+'%';
+    d.innerHTML='<span class="f-face">🐟</span><span class="f-label">'+label+'</span>';
+    $('fZone').appendChild(d);
+    fFish.push(d);
+  });
+  if(fMoveTimer)clearInterval(fMoveTimer);
+  fMoveTimer=setInterval(moveFish,60);
+}
+function moveFish(){
+  for(var i=fFish.length-1;i>=0;i--){
+    var d=fFish[i];
+    if(!d||d.getAttribute('data-dead'))continue;
+    var x=Number(d.getAttribute('data-x')),dir=Number(d.getAttribute('data-dir'));
+    x+=dir*0.13;
+    if(x<=2){dir=1;}else if(x>=84){dir=-1;}
+    d.setAttribute('data-x',String(x));d.setAttribute('data-dir',String(dir));
+    d.style.left=x+'%';
+    if(Math.random()<0.008){
+      var y=6+Math.random()*58;
+      d.setAttribute('data-y',String(y));d.style.top=y+'%';
+    }
+  }
+}
+function startFish(){
+  fScore=0;fLives=3;fTime=60;fBusy=false;
+  $('fishGame').style.display='';$('gamePick').style.display='none';
+  $('fScore').textContent='得分 0';updateFLives();$('fTime').textContent='60s';
+  spawnFishRound();
+  if(fTimer)clearInterval(fTimer);
+  fTimer=setInterval(function(){fTime--;$('fTime').textContent=fTime+'s';if(fTime<=0){endFish();}},1000);
+}
+$('fZone').addEventListener('click',function(e){
+  var b=e.target.closest('.fish');if(!b||fBusy||fLives<=0)return;
+  var li=Number(b.getAttribute('data-li'));
+  if(li===fRound.li){
+    fScore+=10;$('fScore').textContent='得分 '+fScore;
+    playCorrect();
+    b.classList.add('caught');
+    b.setAttribute('data-dead','1');
+    fBusy=true;
+    setTimeout(function(){fBusy=false;spawnFishRound();},720);
+  }else{
+    playWrong();
+    fLives--;updateFLives();
+    b.classList.add('wrong');
+    setTimeout(function(){b.classList.remove('wrong');},400);
+    if(fLives<=0){endFish();}
+  }
+});
+$('fPrompt').addEventListener('click',function(e){
+  if(e.target.closest('[data-replay]')){gameSpeak(fRound.li);}
+});
+function endFish(){
+  if(fTimer)clearInterval(fTimer);fTimer=null;
+  if(fMoveTimer)clearInterval(fMoveTimer);fMoveTimer=null;
+  $('fZone').innerHTML='';
+  var stars=gameOverStars(fScore);
+  addStars(stars);
+  if(stars===3)confetti();
+  showGameEnd('fish',fScore,stars);
+}
+$('fQuit').addEventListener('click',function(){
+  if(fTimer)clearInterval(fTimer);fTimer=null;
+  if(fMoveTimer)clearInterval(fMoveTimer);fMoveTimer=null;
+  $('fishGame').style.display='none';$('gamePick').style.display='';
+});
+/* ---- 游戏结束与入口 ---- */
+var geLast='zombie';
+function showGameEnd(kind,score,stars){
+  geLast=kind;
+  $('geBig').textContent=kind==='zombie'?'🧟':'🎣';
+  $('geTitle').textContent=kind==='zombie'?'打僵尸结束':'钓鱼结束';
+  $('geScore').textContent='得分 '+score;
+  showEndStars($('geStars'),stars);
+  $('gameEnd').style.display='flex';
+}
+$('geAgain').addEventListener('click',function(){
+  $('gameEnd').style.display='none';
+  if(geLast==='zombie'){startZombie();}else{startFish();}
+});
+$('geBack').addEventListener('click',function(){
+  $('gameEnd').style.display='none';
+  $('zombieGame').style.display='none';$('fishGame').style.display='none';$('gamePick').style.display='';
+});
+$('enterZombie').addEventListener('click',function(){startZombie();});
+$('enterFish').addEventListener('click',function(){startFish();});
+document.querySelectorAll('.game-mode button').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.game-mode button').forEach(function(x){x.classList.remove('active');});
+    b.classList.add('active');
+    gMode=b.getAttribute('data-gmode');
+  });
+});
+
 /* ================= 导航 / 初始化 ================= */
 document.querySelectorAll('nav button').forEach(function(b){
   b.addEventListener('click',function(){
@@ -1388,6 +1725,8 @@ document.querySelectorAll('nav button').forEach(function(b){
     $('quiz').classList.toggle('show',b.getAttribute('data-tab')==='quiz');
     $('match').classList.toggle('show',b.getAttribute('data-tab')==='match');
     $('sent').classList.toggle('show',b.getAttribute('data-tab')==='sent');
+    $('games').classList.toggle('show',b.getAttribute('data-tab')==='games');
+    if(b.getAttribute('data-tab')!=='games'){stopGames();}
     if(b.getAttribute('data-tab')==='quiz'){setTimeout(function(){replayQ();},350);}
   });
 });
