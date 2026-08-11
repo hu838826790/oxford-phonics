@@ -221,12 +221,7 @@
   .game-entry .big{font-size:44px;display:block;margin-bottom:8px;}
   .game-hud{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;background:#fff;border-radius:14px;padding:8px 12px;box-shadow:var(--shadow);font-weight:800;font-size:14px;margin-bottom:10px;}
   .game-hud button{border:none;border-radius:10px;padding:6px 12px;font-weight:800;cursor:pointer;background:#ff6b6b;color:#fff;}
-  .z-gun{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);width:150px;height:46px;z-index:4;pointer-events:none;}
-  .z-gun .barrel{position:absolute;right:-34px;top:12px;width:92px;height:10px;background:#2f2f2f;border-radius:4px;}
-  .z-gun .body{position:absolute;left:8px;top:8px;width:64px;height:22px;background:#6b4423;border-radius:6px;}
-  .z-gun .stock{position:absolute;left:-6px;top:12px;width:36px;height:22px;background:#8a5a2e;border-radius:4px;}
-  .z-gun .scope{position:absolute;left:44px;top:-18px;width:24px;height:24px;border:4px solid #222;border-radius:50%;background:#d3ecff;}
-  .z-gun .grip{position:absolute;left:26px;bottom:-2px;width:9px;height:20px;background:#2f2f2f;border-radius:3px;}
+  .z-gun{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);width:196px;height:92px;z-index:4;pointer-events:none;}
   .zombie.bonus{transform:scale(1.7);z-index:8;}
   .zombie.bonus .z-label{font-size:24px;background:linear-gradient(135deg,#ffd43b,#ffb347);}
   .zombie .z-star{display:none;font-size:18px;font-weight:900;color:#fff;text-shadow:0 0 6px rgba(0,0,0,.6);}
@@ -471,7 +466,60 @@
           <div class="z-house">🏠</div>
           <div class="z-prompt" id="zPrompt"></div>
           <div class="z-zone" id="zZone"></div>
-          <div class="z-gun"><span class="barrel"></span><span class="body"></span><span class="stock"></span><span class="scope"></span><span class="grip"></span></div>
+          <div class="z-gun"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 100" width="196" height="92" style="filter:drop-shadow(0 3px 5px rgba(0,0,0,.4));">
+  <defs>
+    <linearGradient id="gpSlide" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e9edf2"/><stop offset=".42" stop-color="#aeb8c4"/><stop offset="1" stop-color="#4d5866"/>
+    </linearGradient>
+    <linearGradient id="gpFrame" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a414a"/><stop offset="1" stop-color="#151a1f"/>
+    </linearGradient>
+    <linearGradient id="gpGrip" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b3138"/><stop offset="1" stop-color="#0c0f12"/>
+    </linearGradient>
+    <linearGradient id="gpTrigger" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7a8794"/><stop offset="1" stop-color="#39424b"/>
+    </linearGradient>
+  </defs>
+  <!-- 套筒 slide -->
+  <path d="M20 26 L172 26 Q186 26 189 34 L189 42 Q189 50 178 50 L26 50 Q18 50 18 42 L18 32 Q18 26 20 26 Z" fill="url(#gpSlide)" stroke="#20262c" stroke-width="1.2"/>
+  <!-- 套筒顶部高光 -->
+  <rect x="22" y="27" width="158" height="3.4" rx="1.7" fill="#f4f7fa" opacity=".9"/>
+  <!-- 抛壳窗 -->
+  <rect x="104" y="30" width="30" height="11" rx="2" fill="#14181c" stroke="#3a434d" stroke-width="1"/>
+  <!-- 后部防滑纹 -->
+  <g fill="#232a31">
+    <rect x="26" y="30" width="2.6" height="12" rx="1"/><rect x="31" y="30" width="2.6" height="12" rx="1"/><rect x="36" y="30" width="2.6" height="12" rx="1"/><rect x="41" y="30" width="2.6" height="12" rx="1"/><rect x="46" y="30" width="2.6" height="12" rx="1"/>
+  </g>
+  <!-- 准星/照门 -->
+  <rect x="176" y="20" width="5" height="6" rx="1" fill="#1c2127"/>
+  <rect x="178" y="24" width="3" height="4" fill="#0f1215"/>
+  <rect x="15" y="21" width="9" height="5" rx="1.5" fill="#1c2127"/>
+  <!-- 枪口 -->
+  <ellipse cx="188" cy="40" rx="4.5" ry="6" fill="#0c0f12"/>
+  <ellipse cx="189.6" cy="40" rx="2" ry="3" fill="#05070a"/>
+  <!-- 复进杆前端 -->
+  <rect x="160" y="34" width="26" height="7" rx="2" fill="#2c333b" stroke="#1a2026" stroke-width="1"/>
+  <!-- 下机匣 frame -->
+  <path d="M22 50 L146 50 L146 62 L120 62 L120 56 L100 56 L100 62 L60 62 L60 66 Q60 72 54 72 L40 72 Q30 72 30 64 L30 58 Q30 50 22 50 Z" fill="url(#gpFrame)" stroke="#14181c" stroke-width="1.2"/>
+  <!-- 扳机护圈 -->
+  <path d="M96 56 L128 56 Q138 56 138 64 L138 72 Q138 84 126 84 L102 84 Q90 84 90 72 L90 64 Q90 56 96 56 Z" fill="url(#gpFrame)" stroke="#14181c" stroke-width="1.2"/>
+  <!-- 扳机 -->
+  <path d="M110 58 Q114 64 110 70 Q106 76 100 76" fill="none" stroke="url(#gpTrigger)" stroke-width="5" stroke-linecap="round"/>
+  <!-- 握把 -->
+  <path d="M56 64 L136 64 L122 96 Q120 99 116 99 L70 99 Q66 99 64 96 Z" fill="url(#gpGrip)" stroke="#0e1115" stroke-width="1.2"/>
+  <!-- 握把防滑纹理 -->
+  <g stroke="#3a424c" stroke-width="1.4" opacity=".8">
+    <line x1="66" y1="72" x2="130" y2="72"/><line x1="65" y1="78" x2="127" y2="78"/><line x1="64" y1="84" x2="124" y2="84"/><line x1="64" y1="90" x2="121" y2="90"/><line x1="65" y1="95" x2="118" y2="95"/>
+  </g>
+  <!-- 弹匣底盖 -->
+  <rect x="70" y="97" width="50" height="3" rx="1.5" fill="#0a0d10"/>
+  <!-- 空仓挂机/分解销 -->
+  <circle cx="120" cy="52" r="2.4" fill="#14181c" stroke="#7a8794" stroke-width=".8"/>
+  <circle cx="52" cy="52" r="2" fill="#14181c" stroke="#7a8794" stroke-width=".8"/>
+  <!-- 底部高光 -->
+  <rect x="24" y="48" width="120" height="2" fill="#000" opacity=".25"/>
+</svg></div>
           <div class="z-crosshair" id="zCross"></div>
           <div class="z-hit" id="zHit"></div>
         </div>
@@ -674,7 +722,7 @@ function speakChunks(chunks,opts){
 
 
 
-var APP_VERSION='v24'; // 当前版本号，每次发布递增
+var APP_VERSION='v27'; // 当前版本号，每次发布递增
 var LETTER_SPOKEN={
  A:'ay',B:'bee',C:'see',D:'dee',E:'ee',F:'eff',G:'gee',H:'aitch',
  I:'eye',J:'jay',K:'kay',L:'el',M:'em',N:'en',O:'oh',P:'pee',
@@ -1639,12 +1687,28 @@ function spawnZombieBonus(){
   d.className='zombie bonus';
   d.setAttribute('data-li',zRound.li);
   d.setAttribute('data-speed','1.3');
-  d.style.top='55px';
+  d.style.top='20px';
   d.innerHTML='<span class="z-star">★3</span><span class="z-face">🧟</span>'+(gMode==='case'?'<span class="z-label">'+label+'</span>':'<span class="z-label" style="font-size:28px;">'+label+'</span>');
-  d.setAttribute('data-x',String(w-110));
-  d.style.left=(w-110)+'px';
+  d.setAttribute('data-x',String(w-120));
+  d.style.left=(w-120)+'px';
   $('zZone').appendChild(d);
-  zItems=[d];
+  zItems.push(d);
+  // 干扰僵尸
+  var others=shuffle(LETTERS.map(function(_,i){return i;}).filter(function(x){return x!==zRound.li;})).slice(0,3);
+  others.forEach(function(oi,i){
+    var OL=LETTERS[oi];
+    var lbl=gMode==='case'?OL.l:OL.w[0][1];
+    var od=document.createElement('div');
+    od.className='zombie';
+    od.setAttribute('data-li',oi);
+    od.setAttribute('data-speed',String((1.2+Math.random()*0.7).toFixed(2)));
+    od.style.top=(115+i*66)+'px';
+    od.innerHTML='<span class="z-face">🧟</span>'+(gMode==='case'?'<span class="z-label">'+lbl+'</span>':'<span class="z-label" style="font-size:28px;">'+lbl+'</span>');
+    od.setAttribute('data-x',String(w-80-i*30));
+    od.style.left=(w-80-i*30)+'px';
+    $('zZone').appendChild(od);
+    zItems.push(od);
+  });
   if(zMoveTimer)clearInterval(zMoveTimer);
   zMoveTimer=setInterval(moveZombies,50);
 }
@@ -1694,8 +1758,10 @@ $('zZone').addEventListener('click',function(e){
     setTimeout(function(){zBusy=false;spawnZombieRound();},520);
   }else{
     playWrong();
+    zLives--;updateZLives();
     b.classList.add('wrong');
     setTimeout(function(){b.classList.remove('wrong');},400);
+    if(zLives<=0){endZombie();}
   }
 });
 $('zPrompt').addEventListener('click',function(e){
@@ -1773,12 +1839,28 @@ function spawnFishBonus(){
   var d=document.createElement('div');
   d.className='fish bonus';
   d.setAttribute('data-li',fRound.li);
-  d.setAttribute('data-x','38');d.setAttribute('data-y','18');
+  d.setAttribute('data-x','38');d.setAttribute('data-y','12');
   d.setAttribute('data-dir','1');
-  d.style.left='38%';d.style.top='18%';
+  d.style.left='38%';d.style.top='12%';
   d.innerHTML='<span class="f-star">★3</span><span class="f-face">🐋</span><span class="f-label"'+(gMode==='case'?'':' style="font-size:26px;"')+'>'+label+'</span>';
   $('fZone').appendChild(d);
-  fFish=[d];
+  fFish.push(d);
+  // 干扰鱼
+  var others=shuffle(LETTERS.map(function(_,i){return i;}).filter(function(x){return x!==fRound.li;})).slice(0,3);
+  others.forEach(function(oi){
+    var OL=LETTERS[oi];
+    var lbl=gMode==='case'?OL.l:OL.w[0][1];
+    var od=document.createElement('div');
+    od.className='fish';
+    od.setAttribute('data-li',oi);
+    var x=6+Math.random()*80,y=42+Math.random()*45;
+    od.setAttribute('data-x',String(x));od.setAttribute('data-y',String(y));
+    od.setAttribute('data-dir',Math.random()<0.5?'1':'-1');
+    od.style.left=x+'%';od.style.top=y+'%';
+    od.innerHTML='<span class="f-face">🐟</span><span class="f-label"'+(gMode==='case'?'':' style="font-size:26px;"')+'>'+lbl+'</span>';
+    $('fZone').appendChild(od);
+    fFish.push(od);
+  });
   if(fMoveTimer)clearInterval(fMoveTimer);
   fMoveTimer=setInterval(moveFish,60);
 }
