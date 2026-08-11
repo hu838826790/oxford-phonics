@@ -221,7 +221,20 @@
   .game-entry .big{font-size:44px;display:block;margin-bottom:8px;}
   .game-hud{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;background:#fff;border-radius:14px;padding:8px 12px;box-shadow:var(--shadow);font-weight:800;font-size:14px;margin-bottom:10px;}
   .game-hud button{border:none;border-radius:10px;padding:6px 12px;font-weight:800;cursor:pointer;background:#ff6b6b;color:#fff;}
-  .z-gun{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-size:38px;z-index:4;pointer-events:none;}
+  .z-gun{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);width:150px;height:46px;z-index:4;pointer-events:none;}
+  .z-gun .barrel{position:absolute;right:-34px;top:12px;width:92px;height:10px;background:#2f2f2f;border-radius:4px;}
+  .z-gun .body{position:absolute;left:8px;top:8px;width:64px;height:22px;background:#6b4423;border-radius:6px;}
+  .z-gun .stock{position:absolute;left:-6px;top:12px;width:36px;height:22px;background:#8a5a2e;border-radius:4px;}
+  .z-gun .scope{position:absolute;left:44px;top:-18px;width:24px;height:24px;border:4px solid #222;border-radius:50%;background:#d3ecff;}
+  .z-gun .grip{position:absolute;left:26px;bottom:-2px;width:9px;height:20px;background:#2f2f2f;border-radius:3px;}
+  .zombie.bonus{transform:scale(1.7);z-index:8;}
+  .zombie.bonus .z-label{font-size:24px;background:linear-gradient(135deg,#ffd43b,#ffb347);}
+  .zombie .z-star{display:none;font-size:18px;font-weight:900;color:#fff;text-shadow:0 0 6px rgba(0,0,0,.6);}
+  .zombie.bonus .z-star{display:block;}
+  .fish.bonus{transform:scale(1.9);z-index:8;}
+  .fish.bonus .f-label{font-size:22px;background:linear-gradient(135deg,#ffd43b,#ffb347);}
+  .fish .f-star{display:none;font-size:18px;font-weight:900;color:#fff;text-shadow:0 0 6px rgba(0,0,0,.6);}
+  .fish.bonus .f-star{display:block;}
   .z-crosshair{position:absolute;width:36px;height:36px;border:3px solid #fff;border-radius:50%;z-index:6;pointer-events:none;box-shadow:0 0 0 2px rgba(0,0,0,.4);display:none;}
   .z-crosshair::before,.z-crosshair::after{content:"";position:absolute;background:#ff6b6b;}
   .z-crosshair::before{left:15px;top:-9px;width:3px;height:54px;}
@@ -444,29 +457,28 @@
       <div class="game-mode">
         <button data-gmode="case" class="active">🔤 大小写配对</button>
         <button data-gmode="pic">🖼️ 单词配图</button>
-        <button data-gmode="hand">✍️ 手写配单词</button>
-      </div>
+              </div>
       <div class="game-pick" id="gamePick">
         <button class="game-entry zombie-btn" id="enterZombie"><span class="big">🧟</span>打僵尸</button>
         <button class="game-entry fish-btn" id="enterFish"><span class="big">🎣</span>钓鱼</button>
       </div>
       <div class="game-play" id="zombieGame" style="display:none;">
         <div class="game-hud">
-          <span>🧟 打僵尸</span><span id="zScore">得分 0</span><span id="zLives">❤️❤️❤️</span><span id="zTime">60s</span>
+          <span>🧟 打僵尸</span><span id="zScore">得分 0</span><span id="zLives">❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️</span><span id="zTime">60s</span>
           <button id="zQuit">✖ 退出</button>
         </div>
         <div class="z-scene" id="zScene">
           <div class="z-house">🏠</div>
           <div class="z-prompt" id="zPrompt"></div>
           <div class="z-zone" id="zZone"></div>
-          <div class="z-gun">🔫</div>
+          <div class="z-gun"><span class="barrel"></span><span class="body"></span><span class="stock"></span><span class="scope"></span><span class="grip"></span></div>
           <div class="z-crosshair" id="zCross"></div>
           <div class="z-hit" id="zHit"></div>
         </div>
       </div>
       <div class="game-play" id="fishGame" style="display:none;">
         <div class="game-hud">
-          <span>🎣 钓鱼</span><span id="fScore">得分 0</span><span id="fLives">❤️❤️❤️</span><span id="fTime">60s</span>
+          <span>🎣 钓鱼</span><span id="fScore">得分 0</span><span id="fLives">❤️❤️❤️❤️❤️❤️❤️❤️❤️</span><span id="fTime">60s</span>
           <button id="fQuit">✖ 退出</button>
         </div>
         <div class="f-pond" id="fPond">
@@ -662,7 +674,7 @@ function speakChunks(chunks,opts){
 
 
 
-var APP_VERSION='v22'; // 当前版本号，每次发布递增
+var APP_VERSION='v23'; // 当前版本号，每次发布递增
 var LETTER_SPOKEN={
  A:'ay',B:'bee',C:'see',D:'dee',E:'ee',F:'eff',G:'gee',H:'aitch',
  I:'eye',J:'jay',K:'kay',L:'el',M:'em',N:'en',O:'oh',P:'pee',
@@ -1496,7 +1508,7 @@ function gamePickRound(){
   var items=lis.map(function(x){
     var L=LETTERS[x];
     if(gMode==='case'){return {li:x,label:L.l};}
-    return {li:x,label:L.w[0][0]};
+    return {li:x,label:L.w[0][1]};
   });
   return {li:li,items:items};
 }
@@ -1504,14 +1516,13 @@ function gamePromptHTML(li){
   var L=LETTERS[li];
   var body='';
   if(gMode==='case'){body='<div style="font-size:36px;line-height:1.1;">'+L.n+'</div>';}
-  else if(gMode==='pic'){body='<div class="gp-emoji">'+L.w[0][1]+'</div>';}
+  else if(gMode==='pic'){body='<div style="font-size:22px;line-height:1.2;">'+L.w[0][0]+'</div>';}
   else{body=handwrittenSVG(L.l);}
   return body+'<button class="gp-replay" data-replay="1">🔊 再听一遍</button>';
 }
 function gameSpeak(li){
   if(gMode==='case'){speakLetterName(li);}
-  else if(gMode==='pic'){playWord(LETTERS[li].w[0][0]);}
-  else{speakSound(li);}
+  else{playWord(LETTERS[li].w[0][0]);}
 }
 function gameOverStars(score){return score>=300?3:(score>=150?2:1);}
 function playShot(){
@@ -1569,10 +1580,11 @@ function stopGames(){
   if(zg)zg.style.display='none';if(fg)fg.style.display='none';if(gp)gp.style.display='';
 }
 /* ---- 打僵尸 ---- */
-var zScore=0,zLives=3,zTime=60,zTimer=null,zMoveTimer=null,zBusy=false,zRound=null,zItems=[];
-function updateZLives(){var s='';for(var i=0;i<3;i++){s+=(i<zLives?'❤️':'🖤');}$('zLives').textContent=s;}
+var zScore=0,zLives=10,zTime=60,zTimer=null,zMoveTimer=null,zBusy=false,zRound=null,zItems=[],zHitCount=0,zBonus=false;
+function updateZLives(){var s='';for(var i=0;i<10;i++){s+=(i<zLives?'❤️':'🖤');}$('zLives').textContent=s;}
 function spawnZombieRound(){
   if(zLives<=0||zTime<=0)return;
+  zBonus=false;
   zRound=gamePickRound();
   $('zPrompt').innerHTML=gamePromptHTML(zRound.li);
   gameSpeak(zRound.li);
@@ -1584,8 +1596,8 @@ function spawnZombieRound(){
     d.className='zombie';
     d.setAttribute('data-li',it.li);
     d.setAttribute('data-speed',String((1.1+Math.random()*1.3).toFixed(2)));
-    d.style.top=(16+Math.floor(Math.random()*5)*52)+'px';
-    d.innerHTML='<span class="z-face">🧟</span>'+(gMode==='case'?'<span class="z-label">'+it.label+'</span>':'<span class="z-word">'+it.label+'</span>');
+    d.style.top=(6+i*66)+'px';
+    d.innerHTML='<span class="z-face">🧟</span>'+(gMode==='case'?'<span class="z-label">'+it.label+'</span>':'<span class="z-label" style="font-size:28px;">'+it.label+'</span>');
     d.setAttribute('data-x',String(w-80));
     d.style.left=(w-80)+'px';
     $('zZone').appendChild(d);
@@ -1612,8 +1624,32 @@ function moveZombies(){
     }
   }
 }
+function spawnZombieBonus(){
+  if(zLives<=0||zTime<=0)return;
+  zBonus=true;
+  zRound=gamePickRound();
+  $('zPrompt').innerHTML='<div style="font-weight:900;color:#ffd43b;text-shadow:0 0 6px rgba(0,0,0,.5);">🎁 大奖僵尸！打中得 ★3</div>'+gamePromptHTML(zRound.li);
+  gameSpeak(zRound.li);
+  $('zZone').innerHTML='';
+  zItems=[];
+  var w=$('zScene').clientWidth||800;
+  var L=LETTERS[zRound.li];
+  var label=gMode==='case'?L.l:L.w[0][1];
+  var d=document.createElement('div');
+  d.className='zombie bonus';
+  d.setAttribute('data-li',zRound.li);
+  d.setAttribute('data-speed','1.3');
+  d.style.top='55px';
+  d.innerHTML='<span class="z-star">★3</span><span class="z-face">🧟</span>'+(gMode==='case'?'<span class="z-label">'+label+'</span>':'<span class="z-label" style="font-size:28px;">'+label+'</span>');
+  d.setAttribute('data-x',String(w-110));
+  d.style.left=(w-110)+'px';
+  $('zZone').appendChild(d);
+  zItems=[d];
+  if(zMoveTimer)clearInterval(zMoveTimer);
+  zMoveTimer=setInterval(moveZombies,50);
+}
 function startZombie(){
-  zScore=0;zLives=3;zTime=60;zBusy=false;
+  zScore=0;zLives=10;zTime=60;zBusy=false;zHitCount=0;zBonus=false;
   $('zombieGame').style.display='';$('gamePick').style.display='none';
   $('zScore').textContent='得分 0';updateZLives();$('zTime').textContent='60s';
   spawnZombieRound();
@@ -1632,7 +1668,19 @@ $('zZone').addEventListener('click',function(e){
   var li=Number(b.getAttribute('data-li'));
   playShot();
   if(li===zRound.li){
+    if(zBonus){
+      zScore+=30;$('zScore').textContent='得分 '+zScore;
+      addStars(3);confetti();showCeleb(3,'大奖到手！');
+      playCorrect();
+      b.classList.add('boom');b.setAttribute('data-dead','1');
+      zBonus=false;
+      zBusy=true;
+      setTimeout(function(){zBusy=false;spawnZombieRound();},900);
+      return;
+    }
     zScore+=10;$('zScore').textContent='得分 '+zScore;
+    zHitCount++;
+    if(zHitCount%5===0){spawnZombieBonus();return;}
     playZombieScream();
     var hit=$('zHit');
     hit.textContent='配对成功 ✓';
@@ -1668,10 +1716,11 @@ $('zQuit').addEventListener('click',function(){
   $('zombieGame').style.display='none';$('gamePick').style.display='';
 });
 /* ---- 钓鱼 ---- */
-var fScore=0,fLives=3,fTime=60,fTimer=null,fMoveTimer=null,fBusy=false,fRound=null,fFish=[];
-function updateFLives(){var s='';for(var i=0;i<3;i++){s+=(i<fLives?'❤️':'🖤');}$('fLives').textContent=s;}
+var fScore=0,fLives=10,fTime=60,fTimer=null,fMoveTimer=null,fBusy=false,fRound=null,fFish=[],fHitCount=0,fBonus=false;
+function updateFLives(){var s='';for(var i=0;i<10;i++){s+=(i<fLives?'❤️':'🖤');}$('fLives').textContent=s;}
 function spawnFishRound(){
   if(fLives<=0||fTime<=0)return;
+  fBonus=false;
   fRound=gamePickRound();
   var others=shuffle(LETTERS.map(function(_,i){return i;}).filter(function(x){return x!==fRound.li;})).slice(0,5);
   var lis=shuffle([fRound.li].concat(others));
@@ -1681,7 +1730,7 @@ function spawnFishRound(){
   fFish=[];
   lis.forEach(function(li){
     var L=LETTERS[li];
-    var label=gMode==='case'?L.l:L.w[0][0];
+    var label=gMode==='case'?L.l:L.w[0][1];
     var d=document.createElement('div');
     d.className='fish';
     d.setAttribute('data-li',li);
@@ -1689,7 +1738,7 @@ function spawnFishRound(){
     d.setAttribute('data-x',String(x));d.setAttribute('data-y',String(y));
     d.setAttribute('data-dir',Math.random()<0.5?'1':'-1');
     d.style.left=x+'%';d.style.top=y+'%';
-    d.innerHTML='<span class="f-face">🐟</span><span class="f-label">'+label+'</span>';
+    d.innerHTML='<span class="f-face">🐟</span><span class="f-label"'+(gMode==='case'?'':' style="font-size:26px;"')+'>'+label+'</span>';
     $('fZone').appendChild(d);
     fFish.push(d);
   });
@@ -1711,8 +1760,30 @@ function moveFish(){
     }
   }
 }
+function spawnFishBonus(){
+  if(fLives<=0||fTime<=0)return;
+  fBonus=true;
+  fRound=gamePickRound();
+  $('fPrompt').innerHTML='<div style="font-weight:900;color:#ffd43b;text-shadow:0 0 6px rgba(0,0,0,.5);">🎁 大奖鱼！钓到得 ★3</div>'+gamePromptHTML(fRound.li);
+  gameSpeak(fRound.li);
+  $('fZone').innerHTML='';
+  fFish=[];
+  var L=LETTERS[fRound.li];
+  var label=gMode==='case'?L.l:L.w[0][1];
+  var d=document.createElement('div');
+  d.className='fish bonus';
+  d.setAttribute('data-li',fRound.li);
+  d.setAttribute('data-x','38');d.setAttribute('data-y','18');
+  d.setAttribute('data-dir','1');
+  d.style.left='38%';d.style.top='18%';
+  d.innerHTML='<span class="f-star">★3</span><span class="f-face">🐋</span><span class="f-label"'+(gMode==='case'?'':' style="font-size:26px;"')+'>'+label+'</span>';
+  $('fZone').appendChild(d);
+  fFish=[d];
+  if(fMoveTimer)clearInterval(fMoveTimer);
+  fMoveTimer=setInterval(moveFish,60);
+}
 function startFish(){
-  fScore=0;fLives=3;fTime=60;fBusy=false;
+  fScore=0;fLives=10;fTime=60;fBusy=false;fHitCount=0;fBonus=false;
   $('fishGame').style.display='';$('gamePick').style.display='none';
   $('fScore').textContent='得分 0';updateFLives();$('fTime').textContent='60s';
   spawnFishRound();
@@ -1723,7 +1794,19 @@ $('fZone').addEventListener('click',function(e){
   var b=e.target.closest('.fish');if(!b||fBusy||fLives<=0)return;
   var li=Number(b.getAttribute('data-li'));
   if(li===fRound.li){
+    if(fBonus){
+      fScore+=30;$('fScore').textContent='得分 '+fScore;
+      addStars(3);confetti();showCeleb(3,'大奖到手！');
+      playCorrect();
+      b.classList.add('caught');b.setAttribute('data-dead','1');
+      fBonus=false;
+      fBusy=true;
+      setTimeout(function(){fBusy=false;spawnFishRound();},900);
+      return;
+    }
     fScore+=10;$('fScore').textContent='得分 '+fScore;
+    fHitCount++;
+    if(fHitCount%5===0){spawnFishBonus();return;}
     playCatch();
     var rod=$('fRod');if(rod)rod.style.transform='rotate(-35deg)';
     setTimeout(function(){if($('fRod'))$('fRod').style.transform='rotate(18deg)';},500);
