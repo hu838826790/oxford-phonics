@@ -221,7 +221,7 @@
   .game-entry .big{font-size:44px;display:block;margin-bottom:8px;}
   .game-hud{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;background:#fff;border-radius:14px;padding:8px 12px;box-shadow:var(--shadow);font-weight:800;font-size:14px;margin-bottom:10px;}
   .game-hud button{border:none;border-radius:10px;padding:6px 12px;font-weight:800;cursor:pointer;background:#ff6b6b;color:#fff;}
-  .z-gun{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);width:96px;height:200px;z-index:4;pointer-events:none;}
+  .z-gun{position:absolute;top:6px;left:8px;width:200px;height:100px;z-index:4;pointer-events:none;}
                   .z-crosshair{position:absolute;width:36px;height:36px;border:3px solid #fff;border-radius:50%;z-index:6;pointer-events:none;box-shadow:0 0 0 2px rgba(0,0,0,.4);display:none;}
   .z-crosshair::before,.z-crosshair::after{content:"";position:absolute;background:#ff6b6b;}
   .z-crosshair::before{left:15px;top:-9px;width:3px;height:54px;}
@@ -229,7 +229,7 @@
   .z-hit{position:absolute;z-index:7;font-size:20px;font-weight:800;color:#fff;background:rgba(76,217,123,.92);border-radius:12px;padding:4px 10px;pointer-events:none;display:none;}
   .f-rod{position:absolute;top:2px;left:16px;font-size:42px;z-index:4;transform:rotate(18deg);transition:transform .3s;pointer-events:none;}
   .z-scene{position:relative;height:340px;background:linear-gradient(180deg,#87ceeb 0%,#b7e4f7 38%,#6b8e3a 38%,#4c6b28 100%);border-radius:18px;overflow:hidden;box-shadow:var(--shadow);}
-  .z-house{position:absolute;left:10px;bottom:26px;font-size:46px;z-index:2;}
+  .z-house{position:absolute;left:12px;bottom:24px;font-size:86px;z-index:2;line-height:1;}
   .z-prompt{position:absolute;top:8px;left:50%;transform:translateX(-50%);background:#fff;border:3px solid #ffd43b;border-radius:14px;padding:6px 14px;font-size:26px;font-weight:800;z-index:5;box-shadow:var(--shadow);text-align:center;}
   .z-prompt .gp-emoji{font-size:36px;}
   .z-prompt .gp-replay,.f-prompt .gp-replay{display:block;margin:4px auto 0;border:none;border-radius:10px;padding:4px 12px;font-size:13px;font-weight:800;cursor:pointer;background:#ffd43b;color:#4a3728;}
@@ -458,54 +458,59 @@
           <div class="z-house">🏠</div>
           <div class="z-prompt" id="zPrompt"></div>
           <div class="z-zone" id="zZone"></div>
-          <div class="z-gun"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 200" width="96" height="200" style="filter:drop-shadow(0 3px 5px rgba(0,0,0,.4));">
+          <div class="z-gun"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 130" width="200" height="100" style="filter:drop-shadow(0 3px 5px rgba(0,0,0,.45));">
   <defs>
-    <linearGradient id="gpSlide" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#e9edf2"/><stop offset=".42" stop-color="#aeb8c4"/><stop offset="1" stop-color="#4d5866"/>
+    <linearGradient id="deSlide" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e9edf2"/><stop offset=".45" stop-color="#a8b3bf"/><stop offset="1" stop-color="#46515e"/>
     </linearGradient>
-    <linearGradient id="gpFrame" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#3a414a"/><stop offset="1" stop-color="#151a1f"/>
+    <linearGradient id="deFrame" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a414a"/><stop offset="1" stop-color="#14191e"/>
     </linearGradient>
-    <linearGradient id="gpGrip" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#2b3138"/><stop offset="1" stop-color="#0c0f12"/>
+    <linearGradient id="deGrip" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b3138"/><stop offset="1" stop-color="#0b0e11"/>
     </linearGradient>
-    <linearGradient id="gpTrigger" x1="0" y1="0" x2="0" y2="1">
+    <linearGradient id="deTrigger" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#7a8794"/><stop offset="1" stop-color="#39424b"/>
     </linearGradient>
   </defs>
-  <!-- 套筒 slide（竖直，枪口朝上） -->
-  <path d="M30 14 L62 14 Q70 14 70 22 L70 148 Q70 156 62 156 L30 156 Q22 156 22 148 L22 22 Q22 14 30 14 Z" fill="url(#gpSlide)" stroke="#20262c" stroke-width="1.2"/>
-  <!-- 套筒右侧高光 -->
-  <rect x="25" y="16" width="47" height="3.4" rx="1.7" fill="#f4f7fa" opacity=".9"/>
-  <!-- 抛壳窗（右侧） -->
-  <rect x="66" y="52" width="8" height="30" rx="2" fill="#14181c" stroke="#3a434d" stroke-width="1"/>
-  <!-- 套筒后部防滑纹 -->
+  <!-- 击锤 -->
+  <path d="M24 30 Q18 30 16 36 L16 40 Q16 44 22 44 L26 44 Z" fill="#1c2127"/>
+  <!-- 套筒 slide -->
+  <path d="M30 36 L188 36 Q200 36 204 44 L204 56 Q204 62 194 62 L34 62 Q26 62 26 54 L26 43 Q26 36 30 36 Z" fill="url(#deSlide)" stroke="#1f252b" stroke-width="1.2"/>
+  <!-- 套筒顶部高光 -->
+  <rect x="32" y="37" width="160" height="3.2" rx="1.6" fill="#f4f7fa" opacity=".9"/>
+  <!-- 抛壳窗 -->
+  <rect x="112" y="40" width="32" height="10" rx="2" fill="#14181c" stroke="#3a434d" stroke-width="1"/>
+  <!-- 后部防滑纹 -->
   <g fill="#232a31">
-    <rect x="26" y="118" width="44" height="2.6" rx="1"/><rect x="26" y="124" width="44" height="2.6" rx="1"/><rect x="26" y="130" width="44" height="2.6" rx="1"/><rect x="26" y="136" width="44" height="2.6" rx="1"/><rect x="26" y="142" width="44" height="2.6" rx="1"/>
+    <rect x="36" y="40" width="2.6" height="13" rx="1"/><rect x="41" y="40" width="2.6" height="13" rx="1"/><rect x="46" y="40" width="2.6" height="13" rx="1"/><rect x="51" y="40" width="2.6" height="13" rx="1"/><rect x="56" y="40" width="2.6" height="13" rx="1"/><rect x="61" y="40" width="2.6" height="13" rx="1"/>
   </g>
-  <!-- 准星（上）/ 照门（下） -->
-  <rect x="42" y="6" width="8" height="8" rx="1" fill="#1c2127"/>
-  <rect x="39" y="152" width="13" height="5" rx="1.5" fill="#1c2127"/>
+  <!-- 枪口制退器 muzzle brake -->
+  <rect x="186" y="40" width="26" height="16" rx="3" fill="url(#deSlide)" stroke="#1f252b" stroke-width="1.2"/>
+  <rect x="192" y="42" width="4" height="12" rx="1" fill="#0c0f12"/><rect x="199" y="42" width="4" height="12" rx="1" fill="#0c0f12"/><rect x="206" y="42" width="4" height="12" rx="1" fill="#0c0f12"/>
   <!-- 枪口 -->
-  <ellipse cx="46" cy="20" rx="6" ry="4.5" fill="#0c0f12"/>
-  <ellipse cx="46" cy="21.6" rx="2.6" ry="2" fill="#05070a"/>
+  <ellipse cx="216" cy="48" rx="4.5" ry="6" fill="#0a0d10"/>
+  <ellipse cx="217.5" cy="48" rx="2" ry="3" fill="#05070a"/>
+  <!-- 准星/照门 -->
+  <rect x="200" y="30" width="5" height="6" rx="1" fill="#1c2127"/>
+  <rect x="22" y="30" width="10" height="5" rx="1.5" fill="#1c2127"/>
   <!-- 下机匣 frame -->
-  <rect x="26" y="156" width="40" height="14" rx="3" fill="url(#gpFrame)" stroke="#14181c" stroke-width="1.2"/>
-  <!-- 扳机护圈（右侧） -->
-  <path d="M62 168 L82 168 Q92 168 92 176 L92 184 Q92 196 78 196 L58 196 Q48 196 48 184 L48 176 Q48 168 62 168 Z" fill="url(#gpFrame)" stroke="#14181c" stroke-width="1.2"/>
+  <path d="M28 62 L186 62 L186 74 L160 74 L160 68 L140 68 L140 74 L92 74 L92 78 Q92 84 86 84 L52 84 Q42 84 42 76 L42 70 Q42 62 28 62 Z" fill="url(#deFrame)" stroke="#12161b" stroke-width="1.2"/>
+  <!-- 扳机护圈 -->
+  <path d="M128 68 L158 68 Q168 68 168 76 L168 84 Q168 96 156 96 L132 96 Q120 96 120 84 L120 76 Q120 68 128 68 Z" fill="url(#deFrame)" stroke="#12161b" stroke-width="1.2"/>
   <!-- 扳机 -->
-  <path d="M72 172 Q80 176 76 184 Q72 192 64 192" fill="none" stroke="url(#gpTrigger)" stroke-width="5" stroke-linecap="round"/>
-  <!-- 握把（朝下） -->
-  <path d="M30 170 L66 170 L58 208 Q56 214 50 214 L40 214 Q34 214 32 208 Z" fill="url(#gpGrip)" stroke="#0e1115" stroke-width="1.2"/>
+  <path d="M142 70 Q146 76 142 82 Q138 88 132 88" fill="none" stroke="url(#deTrigger)" stroke-width="5" stroke-linecap="round"/>
+  <!-- 握把（沙漠之鹰特色） -->
+  <path d="M58 74 L168 74 L156 110 Q154 116 148 116 L84 116 Q78 116 76 110 L66 92 Q62 82 56 80 Z" fill="url(#deGrip)" stroke="#0d1014" stroke-width="1.2"/>
   <!-- 握把防滑纹理 -->
-  <g stroke="#3a424c" stroke-width="1.6" opacity=".8">
-    <line x1="34" y1="176" x2="62" y2="176"/><line x1="33" y1="182" x2="60" y2="182"/><line x1="33" y1="188" x2="58" y2="188"/><line x1="33" y1="194" x2="56" y2="194"/><line x1="34" y1="200" x2="54" y2="200"/><line x1="35" y1="206" x2="52" y2="206"/>
+  <g stroke="#3a424c" stroke-width="1.5" opacity=".85">
+    <line x1="80" y1="82" x2="160" y2="82"/><line x1="79" y1="89" x2="156" y2="89"/><line x1="78" y1="96" x2="152" y2="96"/><line x1="77" y1="103" x2="148" y2="103"/><line x1="77" y1="109" x2="144" y2="109"/>
   </g>
   <!-- 弹匣底盖 -->
-  <rect x="36" y="212" width="22" height="5" rx="2" fill="#0a0d10"/>
+  <rect x="82" y="115" width="58" height="4" rx="2" fill="#0a0d10"/>
   <!-- 分解销 -->
-  <circle cx="34" cy="163" r="2.4" fill="#14181c" stroke="#7a8794" stroke-width=".8"/>
-  <circle cx="58" cy="163" r="2" fill="#14181c" stroke="#7a8794" stroke-width=".8"/>
+  <circle cx="140" cy="66" r="2.4" fill="#14181c" stroke="#7a8794" stroke-width=".8"/>
+  <circle cx="62" cy="66" r="2" fill="#14181c" stroke="#7a8794" stroke-width=".8"/>
 </svg></div>
           <div class="z-crosshair" id="zCross"></div>
           <div class="z-hit" id="zHit"></div>
@@ -709,7 +714,7 @@ function speakChunks(chunks,opts){
 
 
 
-var APP_VERSION='v28'; // 当前版本号，每次发布递增
+var APP_VERSION='v29'; // 当前版本号，每次发布递增
 var LETTER_SPOKEN={
  A:'ay',B:'bee',C:'see',D:'dee',E:'ee',F:'eff',G:'gee',H:'aitch',
  I:'eye',J:'jay',K:'kay',L:'el',M:'em',N:'en',O:'oh',P:'pee',
@@ -779,7 +784,9 @@ var MEDALS=[
  {name:'黄金',min:12,em:'🥇'},
  {name:'铂金',min:20,em:'💠'},
  {name:'钻石',min:30,em:'💎'},
- {name:'王者',min:45,em:'👑'}
+ {name:'王者',min:45,em:'👑'},
+ {name:'荣耀王者',min:100,em:'🌟'},
+ {name:'终极王者',min:180,em:'♛'}
 ];
 var opfDayStars=0,opfDayDate='';
 function todayStr(){
@@ -841,11 +848,19 @@ function awardWriteStar(letter){
   return true;
 }
 function addStars(n){
+  if(n<=0)return;
+  var oldM=medalFor(opfDayStars);
   var t=0;try{t=parseInt(localStorage.getItem('opfStars')||'0',10);}catch(e){}
   t+=n;opfDayStars+=n;
   try{localStorage.setItem('opfStars',String(t));localStorage.setItem('opfDayStars',String(opfDayStars));localStorage.setItem('opfDayDate',opfDayDate||todayStr());}catch(e){}
   $('starsBadge').textContent='⭐ '+opfDayStars;
   renderDaily();
+  var newM=medalFor(opfDayStars);
+  if(newM&&newM!==oldM){
+    confetti();playCorrect();
+    showCeleb(3,'晋升 '+newM.name+'！');
+    toast('🎉 跨越段位：'+newM.em+' '+newM.name);
+  }
 }
 function showEndStars(el,count){
   var h='';for(var i=0;i<3;i++){h+='<span class="'+(i<count?'':'off')+'">⭐</span>';}
@@ -1443,6 +1458,7 @@ function checkOrder(){
   if(ok){
     orderScore++;orderBusy=true;
     playCorrect();
+    showCeleb(3,'排对啦！');
     var aw2=dailyAwardOnce('order');
     toast('句子排对啦！🎉'+(aw2?' (+3⭐)':''));
     confetti();
@@ -1615,7 +1631,7 @@ function stopGames(){
   if(zg)zg.style.display='none';if(fg)fg.style.display='none';if(gp)gp.style.display='';
 }
 /* ---- 打僵尸 ---- */
-var zScore=0,zLives=10,zTime=60,zTimer=null,zMoveTimer=null,zBusy=false,zRound=null,zItems=[],zHitCount=0;
+var zScore=0,zLives=10,zTime=60,zTimer=null,zMoveTimer=null,zBusy=false,zRound=null,zItems=[],zHitCount=0,zWrong=0;
 function updateZLives(){var s='';for(var i=0;i<10;i++){s+=(i<zLives?'❤️':'🖤');}$('zLives').textContent=s;}
 function spawnZombieRound(){
   if(zLives<=0||zTime<=0)return;
@@ -1652,14 +1668,15 @@ function moveZombies(){
       if(d.parentNode)d.parentNode.removeChild(d);
       zItems.splice(i,1);
       zLives--;updateZLives();playWrong();
-      if(zLives<=0){endZombie();return;}
+      zWrong++;
+      if(zWrong>3){endZombie(true);return;}
       spawnZombieRound();
       return;
     }
   }
 }
 function startZombie(){
-  zScore=0;zLives=10;zTime=60;zBusy=false;zHitCount=0;
+  zScore=0;zLives=10;zTime=60;zBusy=false;zHitCount=0;zWrong=0;
   $('zombieGame').style.display='';$('gamePick').style.display='none';
   $('zScore').textContent='得分 0';updateZLives();$('zTime').textContent='60s';
   spawnZombieRound();
@@ -1694,22 +1711,24 @@ $('zZone').addEventListener('click',function(e){
   }else{
     playWrong();
     zLives--;updateZLives();
+    zWrong++;
     b.classList.add('wrong');
     setTimeout(function(){b.classList.remove('wrong');},400);
-    if(zLives<=0){endZombie();}
+    if(zWrong>3){endZombie(true);}
   }
 });
 $('zPrompt').addEventListener('click',function(e){
   if(e.target.closest('[data-replay]')){gameSpeak(zRound.li);}
 });
-function endZombie(){
+function endZombie(fail){
   if(zTimer)clearInterval(zTimer);zTimer=null;
   if(zMoveTimer)clearInterval(zMoveTimer);zMoveTimer=null;
   $('zZone').innerHTML='';
-  var stars=gameOverStars(zScore);
+  var stars=0;
+  if(!fail){stars=zWrong===0?3:(zWrong<=2?2:(zWrong===3?1:0));}
   addStars(stars);
   if(stars===3)confetti();
-  showGameEnd('zombie',zScore,stars);
+  showGameEnd('zombie',zScore,stars,fail);
 }
 $('zQuit').addEventListener('click',function(){
   if(zTimer)clearInterval(zTimer);zTimer=null;
@@ -1717,7 +1736,7 @@ $('zQuit').addEventListener('click',function(){
   $('zombieGame').style.display='none';$('gamePick').style.display='';
 });
 /* ---- 钓鱼 ---- */
-var fScore=0,fLives=10,fTime=60,fTimer=null,fMoveTimer=null,fBusy=false,fRound=null,fFish=[],fHitCount=0;
+var fScore=0,fLives=10,fTime=60,fTimer=null,fMoveTimer=null,fBusy=false,fRound=null,fFish=[],fHitCount=0,fWrong=0;
 function updateFLives(){var s='';for(var i=0;i<10;i++){s+=(i<fLives?'❤️':'🖤');}$('fLives').textContent=s;}
 function spawnFishRound(){
   if(fLives<=0||fTime<=0)return;
@@ -1761,7 +1780,7 @@ function moveFish(){
   }
 }
 function startFish(){
-  fScore=0;fLives=10;fTime=60;fBusy=false;fHitCount=0;
+  fScore=0;fLives=10;fTime=60;fBusy=false;fHitCount=0;fWrong=0;
   $('fishGame').style.display='';$('gamePick').style.display='none';
   $('fScore').textContent='得分 0';updateFLives();$('fTime').textContent='60s';
   spawnFishRound();
@@ -1784,22 +1803,24 @@ $('fZone').addEventListener('click',function(e){
   }else{
     playWrong();
     fLives--;updateFLives();
+    fWrong++;
     b.classList.add('wrong');
     setTimeout(function(){b.classList.remove('wrong');},400);
-    if(fLives<=0){endFish();}
+    if(fWrong>3){endFish(true);}
   }
 });
 $('fPrompt').addEventListener('click',function(e){
   if(e.target.closest('[data-replay]')){gameSpeak(fRound.li);}
 });
-function endFish(){
+function endFish(fail){
   if(fTimer)clearInterval(fTimer);fTimer=null;
   if(fMoveTimer)clearInterval(fMoveTimer);fMoveTimer=null;
   $('fZone').innerHTML='';
-  var stars=gameOverStars(fScore);
+  var stars=0;
+  if(!fail){stars=fWrong===0?3:(fWrong<=2?2:(fWrong===3?1:0));}
   addStars(stars);
   if(stars===3)confetti();
-  showGameEnd('fish',fScore,stars);
+  showGameEnd('fish',fScore,stars,fail);
 }
 $('fQuit').addEventListener('click',function(){
   if(fTimer)clearInterval(fTimer);fTimer=null;
@@ -1808,11 +1829,11 @@ $('fQuit').addEventListener('click',function(){
 });
 /* ---- 游戏结束与入口 ---- */
 var geLast='zombie';
-function showGameEnd(kind,score,stars){
+function showGameEnd(kind,score,stars,fail){
   geLast=kind;
   $('geBig').textContent=kind==='zombie'?'🧟':'🎣';
-  $('geTitle').textContent=kind==='zombie'?'打僵尸结束':'钓鱼结束';
-  $('geScore').textContent='得分 '+score;
+  $('geTitle').textContent=kind==='zombie'?(fail?'打僵尸失败':'打僵尸结束'):(fail?'钓鱼失败':'钓鱼结束');
+  $('geScore').textContent=fail?'答错超过3题，此局失败':'得分 '+score;
   showEndStars($('geStars'),stars);
   $('gameEnd').style.display='flex';
 }
